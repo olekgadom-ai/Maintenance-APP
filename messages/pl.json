@@ -1,0 +1,54 @@
+{
+  "Metadata": {
+    "title": "Utrzymanie Ruchu",
+    "description": "Zgłaszanie i obsługa awarii maszyn na zakładzie produkcyjnym"
+  },
+  "Common": {
+    "appName": "Utrzymanie Ruchu",
+    "language": "Język",
+    "skipToContent": "Przejdź do treści"
+  },
+  "Home": {
+    "eyebrow": "System zgłoszeń awarii",
+    "title": "Każda awaria ma właściciela, od zgłoszenia do potwierdzenia.",
+    "lead": "Lider obszaru zgłasza problem, kierownik przydziela technika, technik zapisuje wykonane prace, a lider potwierdza, że maszyna działa.",
+    "rolesHeading": "Kto korzysta z aplikacji",
+    "lifecycleHeading": "Cykl życia zgłoszenia",
+    "lifecycleNote": "Lider może odrzucić naprawę. Zgłoszenie wraca wtedy do technika."
+  },
+  "Roles": {
+    "area_leader": {
+      "name": "Lider obszaru",
+      "summary": "Zgłasza awarie ze swojej linii i potwierdza ich usunięcie."
+    },
+    "technician": {
+      "name": "Technik UR",
+      "summary": "Przyjmuje zgłoszenia, usuwa awarie i opisuje wykonane prace."
+    },
+    "manager": {
+      "name": "Kierownik UR",
+      "summary": "Przydziela zadania, pilnuje priorytetów i rozlicza zespół."
+    }
+  },
+  "Status": {
+    "new": "Nowe",
+    "assigned": "Przydzielone",
+    "in_progress": "W realizacji",
+    "on_hold": "Wstrzymane",
+    "resolved": "Do potwierdzenia",
+    "rejected": "Odrzucone",
+    "confirmed": "Potwierdzone",
+    "closed": "Zamknięte",
+    "cancelled": "Anulowane"
+  },
+  "Priority": {
+    "critical": "Krytyczny",
+    "high": "Wysoki",
+    "normal": "Normalny",
+    "low": "Niski"
+  },
+  "NotFound": {
+    "title": "Nie znaleziono strony",
+    "back": "Wróć na stronę główną"
+  }
+}

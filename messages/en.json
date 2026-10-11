@@ -1,0 +1,54 @@
+{
+  "Metadata": {
+    "title": "Maintenance",
+    "description": "Machine breakdown reporting and handling for the production plant"
+  },
+  "Common": {
+    "appName": "Maintenance",
+    "language": "Language",
+    "skipToContent": "Skip to content"
+  },
+  "Home": {
+    "eyebrow": "Breakdown ticketing",
+    "title": "Every breakdown has an owner, from report to sign-off.",
+    "lead": "The area leader reports the problem, the manager assigns a technician, the technician records the work done, and the leader confirms the machine is running.",
+    "rolesHeading": "Who uses the app",
+    "lifecycleHeading": "Ticket lifecycle",
+    "lifecycleNote": "The leader can reject a repair. The ticket then goes back to the technician."
+  },
+  "Roles": {
+    "area_leader": {
+      "name": "Area leader",
+      "summary": "Reports breakdowns on their line and confirms the fix."
+    },
+    "technician": {
+      "name": "Maintenance technician",
+      "summary": "Takes tickets, fixes breakdowns and records the work done."
+    },
+    "manager": {
+      "name": "Maintenance manager",
+      "summary": "Assigns work, sets priorities and manages the team."
+    }
+  },
+  "Status": {
+    "new": "New",
+    "assigned": "Assigned",
+    "in_progress": "In progress",
+    "on_hold": "On hold",
+    "resolved": "Awaiting sign-off",
+    "rejected": "Rejected",
+    "confirmed": "Confirmed",
+    "closed": "Closed",
+    "cancelled": "Cancelled"
+  },
+  "Priority": {
+    "critical": "Critical",
+    "high": "High",
+    "normal": "Normal",
+    "low": "Low"
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "back": "Back to home"
+  }
+}

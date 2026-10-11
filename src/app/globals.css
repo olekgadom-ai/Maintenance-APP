@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Colour is reserved for ticket state and priority;
+ * everything else stays neutral so a stopped machine is the loudest thing on screen.
+ */
+:root {
+  --background: oklch(0.985 0.002 250);
+  --foreground: oklch(0.2 0.01 250);
+  --surface: oklch(1 0 0);
+  --surface-muted: oklch(0.96 0.004 250);
+  --border: oklch(0.9 0.006 250);
+  --muted-foreground: oklch(0.48 0.012 250);
+  --primary: oklch(0.24 0.012 250);
+  --primary-foreground: oklch(0.985 0 0);
+  --ring: oklch(0.55 0.15 250);
+
+  --status-new: oklch(0.55 0.16 250);
+  --status-assigned: oklch(0.52 0.15 285);
+  --status-progress: oklch(0.62 0.15 65);
+  --status-hold: oklch(0.55 0.04 65);
+  --status-resolved: oklch(0.55 0.11 195);
+  --status-rejected: oklch(0.55 0.2 25);
+  --status-done: oklch(0.55 0.14 150);
+  --status-closed: oklch(0.55 0.01 250);
+
+  --priority-critical: oklch(0.56 0.22 27);
+  --priority-high: oklch(0.65 0.17 50);
+  --priority-normal: oklch(0.55 0.02 250);
+  --priority-low: oklch(0.7 0.01 250);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: oklch(0.17 0.006 250);
+    --foreground: oklch(0.95 0.004 250);
+    --surface: oklch(0.21 0.007 250);
+    --surface-muted: oklch(0.25 0.008 250);
+    --border: oklch(0.31 0.008 250);
+    --muted-foreground: oklch(0.72 0.01 250);
+    --primary: oklch(0.95 0.004 250);
+    --primary-foreground: oklch(0.18 0.006 250);
+    --ring: oklch(0.7 0.13 250);
+
+    --status-new: oklch(0.72 0.13 250);
+    --status-assigned: oklch(0.72 0.12 285);
+    --status-progress: oklch(0.8 0.14 75);
+    --status-hold: oklch(0.72 0.04 65);
+    --status-resolved: oklch(0.76 0.1 195);
+    --status-rejected: oklch(0.7 0.18 25);
+    --status-done: oklch(0.76 0.14 150);
+    --status-closed: oklch(0.7 0.01 250);
+
+    --priority-critical: oklch(0.68 0.2 27);
+    --priority-high: oklch(0.76 0.15 55);
+    --priority-normal: oklch(0.72 0.02 250);
+    --priority-low: oklch(0.6 0.01 250);
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-ring: var(--ring);
+
+  --color-status-new: var(--status-new);
+  --color-status-assigned: var(--status-assigned);
+  --color-status-progress: var(--status-progress);
+  --color-status-hold: var(--status-hold);
+  --color-status-resolved: var(--status-resolved);
+  --color-status-rejected: var(--status-rejected);
+  --color-status-done: var(--status-done);
+  --color-status-closed: var(--status-closed);
+
+  --color-priority-critical: var(--priority-critical);
+  --color-priority-high: var(--priority-high);
+  --color-priority-normal: var(--priority-normal);
+  --color-priority-low: var(--priority-low);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
