@@ -7,7 +7,7 @@ export default function AppLayout({ children }: LayoutProps<"/[locale]">) {
   return (
     <>
       <header className="sticky top-0 z-10 border-b bg-background/85 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-3 px-4">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4">
           <AppBrand />
           <div className="flex items-center gap-2">
             <LocaleSwitcher />
@@ -21,7 +21,7 @@ export default function AppLayout({ children }: LayoutProps<"/[locale]">) {
           </div>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 pt-6 pb-16">
+      <main className="mx-auto w-full max-w-7xl flex-1 px-4 pt-6 pb-16">
         {children}
       </main>
     </>

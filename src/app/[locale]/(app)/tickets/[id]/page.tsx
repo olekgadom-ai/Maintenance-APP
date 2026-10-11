@@ -3,9 +3,17 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { BackLink } from "@/components/back-link";
+import { LiveRefresh } from "@/components/live-refresh";
 import { PriorityBadge, StatusBadge } from "@/components/status-badge";
+import {
+  AssignForm,
+  PriorityForm,
+  TransitionButton,
+} from "@/components/ticket-actions";
 import { requireUser } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
+import { getTechnicians } from "@/lib/tickets/queries";
+import { ASSIGNABLE, type Priority } from "@/lib/tickets/status";
 
 const UUID = /^[0-9a-f-]{36}$/i;
 
@@ -22,12 +30,14 @@ export default async function TicketPage({
   searchParams,
 }: PageProps<"/[locale]/tickets/[id]">) {
   const { locale, id } = await params;
-  await requireUser(locale);
+  const user = await requireUser(locale);
   if (!UUID.test(id)) notFound();
 
-  const [t, ts, format, supabase, query] = await Promise.all([
+  const [t, ta, ts, tp, format, supabase, query] = await Promise.all([
     getTranslations("Ticket"),
+    getTranslations("Actions"),
     getTranslations("Status"),
+    getTranslations("Priority"),
     getFormatter(),
     createClient(),
     searchParams,
@@ -37,13 +47,13 @@ export default async function TicketPage({
   const { data: ticket } = await supabase
     .from("tickets")
     .select(
-      `id, number, title, description, status, priority, machine_stopped,
+      `id, number, title, description, status, priority, machine_stopped, assigned_to,
        root_cause, resolution, reported_at,
        machines(code, name), areas(name),
        reporter:profiles!tickets_reported_by_fkey(full_name),
        assignee:profiles!tickets_assigned_to_fkey(full_name),
        ticket_attachments(id, storage_path, kind),
-       ticket_events(id, event_type, from_status, to_status, comment, created_at, actor:profiles(full_name))`,
+       ticket_events(id, event_type, from_status, to_status, comment, payload, created_at, actor:profiles(full_name))`,
     )
     .eq("id", id)
     .order("created_at", { referencedTable: "ticket_events" })
@@ -58,11 +68,16 @@ export default async function TicketPage({
     s.signedUrl && s.path ? [{ path: s.path, url: s.signedUrl }] : [],
   );
 
+  const isManager = user.role === "manager";
+  const technicians = isManager ? await getTechnicians(supabase) : [];
+  const open = !["confirmed", "closed", "cancelled"].includes(ticket.status);
+
   const when = (iso: string) =>
     format.dateTime(new Date(iso), { dateStyle: "medium", timeStyle: "short" });
 
   return (
     <div className="mx-auto max-w-2xl">
+      <LiveRefresh ticketId={ticket.id} />
       <BackLink href="/" label={t("back")} />
 
       {query.reported && (
@@ -117,6 +132,52 @@ export default async function TicketPage({
           )}
         </Field>
       </dl>
+
+      {isManager && (
+        <section
+          aria-labelledby="manager-actions"
+          className="mt-6 grid gap-5 rounded-xl border bg-surface p-4"
+        >
+          <h2 id="manager-actions" className="font-semibold">
+            {ta("managerHeading")}
+          </h2>
+          {ASSIGNABLE.includes(ticket.status) && (
+            <div className="grid gap-2">
+              <p className="text-sm font-medium text-muted-foreground">
+                {ta("technician")}
+              </p>
+              <AssignForm
+                ticketId={ticket.id}
+                technicians={technicians}
+                currentId={ticket.assigned_to}
+              />
+            </div>
+          )}
+          {open && (
+            <div className="grid gap-2">
+              <p className="text-sm font-medium text-muted-foreground">
+                {ta("priority")}
+              </p>
+              <PriorityForm ticketId={ticket.id} current={ticket.priority} />
+            </div>
+          )}
+          {ticket.status === "confirmed" && (
+            <TransitionButton
+              ticketId={ticket.id}
+              to="closed"
+              label={ta("close")}
+            />
+          )}
+          {(ticket.status === "new" || ticket.status === "assigned") && (
+            <TransitionButton
+              ticketId={ticket.id}
+              to="cancelled"
+              label={ta("cancel")}
+              variant="secondary"
+            />
+          )}
+        </section>
+      )}
 
       {ticket.description && (
         <Section title={t("description")}>
@@ -175,13 +236,17 @@ export default async function TicketPage({
                   : event.event_type === "assigned"
                     ? t("events.assigned")
                     : event.event_type === "priority_changed"
-                      ? t("events.priority_changed")
+                      ? t(
+                          "events.priority_changed",
+                          priorityChange(event.payload, tp),
+                        )
                       : t("events.status_changed", {
                           status: event.to_status ? ts(event.to_status) : "",
                         })}
               </p>
               <p className="text-sm text-muted-foreground">
-                {event.actor?.full_name} · {when(event.created_at)}
+                {event.actor?.full_name ?? t("system")} ·{" "}
+                {when(event.created_at)}
               </p>
               {event.comment && (
                 <p className="mt-1 rounded-lg bg-surface-muted px-3 py-2 text-sm whitespace-pre-line">
@@ -228,4 +293,12 @@ function Section({
       {children}
     </section>
   );
+}
+
+function priorityChange(
+  payload: unknown,
+  tp: (key: Priority) => string,
+): { from: string; to: string } {
+  const { from, to } = (payload ?? {}) as { from?: Priority; to?: Priority };
+  return { from: from ? tp(from) : "?", to: to ? tp(to) : "?" };
 }

@@ -1,44 +1,52 @@
-import { ChevronRight, CircleAlert, Inbox, Plus } from "lucide-react";
-import { getFormatter, getTranslations } from "next-intl/server";
-import { PriorityBadge, StatusBadge } from "@/components/status-badge";
+import { CircleAlert, Inbox, Plus } from "lucide-react";
+import { getTranslations } from "next-intl/server";
+import { LiveRefresh } from "@/components/live-refresh";
+import { ManagerBoard } from "@/components/manager-board";
+import { TicketCard } from "@/components/ticket-card";
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { requireUser } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
+import { getTechnicians, TICKET_SUMMARY } from "@/lib/tickets/queries";
 import { cn } from "@/lib/utils";
 
-const CLOSED_STATUSES = "(confirmed,closed,cancelled)";
+const CLOSED_STATUSES = "(closed,cancelled)";
+const LEADER_DONE = "(confirmed,closed,cancelled)";
 
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
   const user = await requireUser(locale);
-  const [t, format, supabase] = await Promise.all([
+  const [t, supabase] = await Promise.all([
     getTranslations("Home"),
-    getFormatter(),
     createClient(),
   ]);
+  const isManager = user.role === "manager";
 
   // RLS narrows this to what the role may see: the leader's area,
   // the technician's own tickets plus the pool, or everything for the manager.
-  const { data: tickets, error } = await supabase
-    .from("tickets")
-    .select(
-      "id, number, title, status, priority, machine_stopped, reported_at, machines(code, name)",
-    )
-    .not("status", "in", CLOSED_STATUSES)
-    .order("machine_stopped", { ascending: false })
-    .order("priority")
-    .order("reported_at");
+  // Confirmed tickets stay on the manager's board until closed.
+  const [{ data: tickets, error }, technicians] = await Promise.all([
+    supabase
+      .from("tickets")
+      .select(TICKET_SUMMARY)
+      .not("status", "in", isManager ? CLOSED_STATUSES : LEADER_DONE)
+      .order("machine_stopped", { ascending: false })
+      .order("priority")
+      .order("reported_at"),
+    isManager ? getTechnicians(supabase) : Promise.resolve([]),
+  ]);
+  const now = new Date();
 
   const heading =
     user.role === "area_leader"
       ? t("heading.area_leader", { area: user.area?.name ?? "" })
       : t(`heading.${user.role}`);
-
   const canReport = user.role !== "technician";
 
   return (
-    <>
+    // Room for the fixed report button on phones.
+    <div className={cn(canReport && "pb-24 sm:pb-0")}>
+      <LiveRefresh />
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-sm text-muted-foreground">
@@ -67,46 +75,18 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
           <CircleAlert aria-hidden className="size-5" />
           {t("loadError")}
         </p>
+      ) : isManager ? (
+        <ManagerBoard tickets={tickets} technicians={technicians} now={now} />
       ) : tickets.length === 0 ? (
-        <div className="mt-8 flex flex-col items-center rounded-xl border border-dashed px-6 py-12 text-center">
+        <div className="mt-8 flex max-w-3xl flex-col items-center rounded-xl border border-dashed px-6 py-12 text-center">
           <Inbox aria-hidden className="size-8 text-muted-foreground" />
           <p className="mt-3 font-medium">{t("empty")}</p>
         </div>
       ) : (
-        <ul className="mt-6 grid gap-3">
+        <ul className="mt-6 grid max-w-3xl gap-3">
           {tickets.map((ticket) => (
             <li key={ticket.id}>
-              <Link
-                href={`/tickets/${ticket.id}`}
-                className="flex items-center gap-3 rounded-xl border bg-surface p-4 transition-colors hover:bg-surface-muted"
-              >
-                <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-mono text-xs text-muted-foreground">
-                      {ticket.number}
-                    </span>
-                    <PriorityBadge priority={ticket.priority} />
-                    {ticket.machine_stopped && (
-                      <span className="inline-flex h-7 items-center rounded-md bg-priority-critical/12 px-2 text-xs font-semibold text-priority-critical">
-                        {t("machineStopped")}
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-2 font-semibold">{ticket.title}</p>
-                  <p className="mt-0.5 text-sm text-muted-foreground">
-                    {ticket.machines?.code} · {ticket.machines?.name} ·{" "}
-                    {format.dateTime(new Date(ticket.reported_at), {
-                      dateStyle: "short",
-                      timeStyle: "short",
-                    })}
-                  </p>
-                  <StatusBadge status={ticket.status} className="mt-3" />
-                </div>
-                <ChevronRight
-                  aria-hidden
-                  className="size-5 shrink-0 text-muted-foreground"
-                />
-              </Link>
+              <TicketCard ticket={ticket} now={now} />
             </li>
           ))}
         </ul>
@@ -123,6 +103,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
           </Link>
         </div>
       )}
-    </>
+    </div>
   );
 }

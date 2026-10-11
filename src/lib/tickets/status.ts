@@ -72,3 +72,18 @@ export function isTerminal(status: TicketStatus): boolean {
 export function isOpen(status: TicketStatus): boolean {
   return !["confirmed", "closed", "cancelled"].includes(status);
 }
+
+// The database rejects these transitions without a comment (comment_required).
+export const COMMENT_REQUIRED: readonly TicketStatus[] = [
+  "rejected",
+  "cancelled",
+  "on_hold",
+];
+
+// Statuses in which the manager may (re)assign a technician; see assign_ticket.
+export const ASSIGNABLE: readonly TicketStatus[] = [
+  "new",
+  "assigned",
+  "on_hold",
+  "rejected",
+];

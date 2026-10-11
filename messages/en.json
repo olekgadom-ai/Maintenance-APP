@@ -127,9 +127,10 @@
     "events": {
       "created": "Breakdown reported",
       "assigned": "Technician assigned",
-      "priority_changed": "Priority changed",
+      "priority_changed": "Priority: {from} → {to}",
       "status_changed": "Status: {status}"
-    }
+    },
+    "system": "System"
   },
   "Errors": {
     "forbidden": "You are not allowed to do this.",
@@ -144,5 +145,31 @@
     "invalid_technician": "The selected person is not an active technician.",
     "ticket_locked": "A closed ticket cannot be edited.",
     "unknown": "Something went wrong. Please try again."
+  },
+  "Board": {
+    "columns": {
+      "unassigned": "To assign",
+      "assigned": "Assigned",
+      "inWork": "In progress",
+      "awaitingLeader": "Awaiting leader",
+      "toClose": "To close"
+    },
+    "emptyColumn": "Empty"
+  },
+  "Actions": {
+    "managerHeading": "Manager actions",
+    "technician": "Technician",
+    "noTechnicians": "No active technicians.",
+    "assign": "Assign",
+    "reassign": "Reassign",
+    "priority": "Priority",
+    "close": "Close ticket",
+    "cancel": "Cancel ticket",
+    "back": "Back",
+    "commentLabel": {
+      "cancelled": "Why are you cancelling this ticket?",
+      "rejected": "What is still not working?",
+      "on_hold": "What are you waiting for? (e.g. parts)"
+    }
   }
 }

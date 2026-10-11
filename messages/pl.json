@@ -127,9 +127,10 @@
     "events": {
       "created": "Zgłoszono awarię",
       "assigned": "Przypisano technika",
-      "priority_changed": "Zmieniono priorytet",
+      "priority_changed": "Priorytet: {from} → {to}",
       "status_changed": "Status: {status}"
-    }
+    },
+    "system": "System"
   },
   "Errors": {
     "forbidden": "Nie masz uprawnień do tej operacji.",
@@ -144,5 +145,31 @@
     "invalid_technician": "Wybrana osoba nie jest aktywnym technikiem.",
     "ticket_locked": "Zamkniętego zgłoszenia nie można edytować.",
     "unknown": "Coś poszło nie tak. Spróbuj ponownie."
+  },
+  "Board": {
+    "columns": {
+      "unassigned": "Do przypisania",
+      "assigned": "Przydzielone",
+      "inWork": "W realizacji",
+      "awaitingLeader": "Czeka na lidera",
+      "toClose": "Do zamknięcia"
+    },
+    "emptyColumn": "Pusto"
+  },
+  "Actions": {
+    "managerHeading": "Działania kierownika",
+    "technician": "Technik",
+    "noTechnicians": "Brak aktywnych techników.",
+    "assign": "Przypisz",
+    "reassign": "Zmień technika",
+    "priority": "Priorytet",
+    "close": "Zamknij zgłoszenie",
+    "cancel": "Anuluj zgłoszenie",
+    "back": "Wróć",
+    "commentLabel": {
+      "cancelled": "Dlaczego anulujesz zgłoszenie?",
+      "rejected": "Co nadal nie działa?",
+      "on_hold": "Na co czekasz? (np. części)"
+    }
   }
 }
