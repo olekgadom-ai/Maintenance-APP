@@ -11,7 +11,12 @@ const nextConfig: NextConfig = {
       // Breakdown reports carry up to 5 photos, downscaled in the browser first.
       bodySizeLimit: "8mb",
       // Requests arrive through forgework.space, whose origin differs from this deployment's host.
-      allowedOrigins: ["forgework.space", "www.forgework.space"],
+      // Extra hosts (e.g. a preview of the main site) via SERVER_ACTIONS_ALLOWED_ORIGINS.
+      allowedOrigins: [
+        "forgework.space",
+        "www.forgework.space",
+        ...(process.env.SERVER_ACTIONS_ALLOWED_ORIGINS?.split(",") ?? []),
+      ],
     },
   },
   turbopack: {
