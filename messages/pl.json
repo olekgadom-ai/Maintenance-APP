@@ -6,15 +6,19 @@
   "Common": {
     "appName": "Utrzymanie Ruchu",
     "language": "Język",
-    "skipToContent": "Przejdź do treści"
+    "skipToContent": "Przejdź do treści",
+    "signOut": "Wyloguj"
   },
   "Home": {
-    "eyebrow": "System zgłoszeń awarii",
-    "title": "Każda awaria ma właściciela, od zgłoszenia do potwierdzenia.",
-    "lead": "Lider obszaru zgłasza problem, kierownik przydziela technika, technik zapisuje wykonane prace, a lider potwierdza, że maszyna działa.",
-    "rolesHeading": "Kto korzysta z aplikacji",
-    "lifecycleHeading": "Cykl życia zgłoszenia",
-    "lifecycleNote": "Lider może odrzucić naprawę. Zgłoszenie wraca wtedy do technika."
+    "greeting": "Cześć, {name}",
+    "heading": {
+      "area_leader": "Zgłoszenia w obszarze {area}",
+      "technician": "Moje zlecenia i nowe zgłoszenia",
+      "manager": "Otwarte zgłoszenia w zakładzie"
+    },
+    "empty": "Brak otwartych zgłoszeń",
+    "loadError": "Nie udało się wczytać zgłoszeń. Spróbuj odświeżyć stronę.",
+    "machineStopped": "Maszyna stoi"
   },
   "Roles": {
     "area_leader": {
@@ -50,5 +54,14 @@
   "NotFound": {
     "title": "Nie znaleziono strony",
     "back": "Wróć na stronę główną"
+  },
+  "Login": {
+    "title": "Zaloguj się",
+    "lead": "Wybierz rolę, w której chcesz pracować.",
+    "leaderArea": "Montaż",
+    "demoNotice": "Wersja demonstracyjna: logowanie bez hasła. Każda rola to wspólne konto testowe.",
+    "errors": {
+      "unavailable": "Logowanie jest chwilowo niedostępne. Spróbuj ponownie za chwilę."
+    }
   }
 }

@@ -6,15 +6,19 @@
   "Common": {
     "appName": "Maintenance",
     "language": "Language",
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "signOut": "Sign out"
   },
   "Home": {
-    "eyebrow": "Breakdown ticketing",
-    "title": "Every breakdown has an owner, from report to sign-off.",
-    "lead": "The area leader reports the problem, the manager assigns a technician, the technician records the work done, and the leader confirms the machine is running.",
-    "rolesHeading": "Who uses the app",
-    "lifecycleHeading": "Ticket lifecycle",
-    "lifecycleNote": "The leader can reject a repair. The ticket then goes back to the technician."
+    "greeting": "Hi, {name}",
+    "heading": {
+      "area_leader": "Tickets in {area}",
+      "technician": "My work and new tickets",
+      "manager": "Open tickets across the plant"
+    },
+    "empty": "No open tickets",
+    "loadError": "Could not load tickets. Try refreshing the page.",
+    "machineStopped": "Machine down"
   },
   "Roles": {
     "area_leader": {
@@ -50,5 +54,14 @@
   "NotFound": {
     "title": "Page not found",
     "back": "Back to home"
+  },
+  "Login": {
+    "title": "Sign in",
+    "lead": "Choose the role you want to work as.",
+    "leaderArea": "Assembly",
+    "demoNotice": "Demo version: no password needed. Each role is a shared test account.",
+    "errors": {
+      "unavailable": "Sign-in is temporarily unavailable. Please try again shortly."
+    }
   }
 }
