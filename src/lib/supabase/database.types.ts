@@ -472,6 +472,21 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      admin_update_profile: {
+        Args: {
+          p_active: boolean;
+          p_area_id: string | null;
+          p_role: Database["public"]["Enums"]["user_role"];
+          p_user_id: string;
+        };
+        Returns: Database["public"]["Tables"]["profiles"]["Row"];
+        SetofOptions: {
+          from: "*";
+          to: "profiles";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       assign_ticket: {
         Args: {
           p_comment?: string;

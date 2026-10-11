@@ -7,7 +7,8 @@
     "appName": "Utrzymanie Ruchu",
     "language": "Język",
     "skipToContent": "Przejdź do treści",
-    "signOut": "Wyloguj"
+    "signOut": "Wyloguj",
+    "admin": "Administracja"
   },
   "Home": {
     "greeting": "Cześć, {name}",
@@ -224,5 +225,67 @@
     "hint": "Sprawdź maszynę i potwierdź naprawę albo odrzuć ją z opisem problemu.",
     "confirm": "Potwierdzam, działa",
     "reject": "Odrzuć naprawę"
+  },
+  "Admin": {
+    "heading": "Administracja",
+    "tabs": {
+      "settings": "Ustawienia",
+      "machines": "Maszyny",
+      "areas": "Obszary",
+      "users": "Użytkownicy"
+    },
+    "save": "Zapisz",
+    "add": "Dodaj",
+    "saved": "Zapisano",
+    "inactive": "Nieaktywna",
+    "chooseArea": "Wybierz obszar",
+    "fields": {
+      "code": "Kod",
+      "name": "Nazwa",
+      "area": "Obszar",
+      "criticality": "Krytyczność",
+      "active": "Aktywna",
+      "role": "Rola",
+      "activeAccount": "Konto aktywne"
+    },
+    "criticality": {
+      "A": "A – kluczowa",
+      "B": "B – ważna",
+      "C": "C – pomocnicza"
+    },
+    "selfAssign": {
+      "title": "Technicy biorą zgłoszenia z puli",
+      "hint": "Gdy włączone, technik może sam przypisać sobie nowe zgłoszenie bez udziału kierownika.",
+      "on": "Włączone",
+      "off": "Wyłączone",
+      "enable": "Włącz",
+      "disable": "Wyłącz"
+    },
+    "areas": {
+      "add": "Nowy obszar",
+      "machines": "{count, plural, =0 {Brak maszyn} one {# maszyna} few {# maszyny} other {# maszyn}}"
+    },
+    "machines": {
+      "add": "Dodaj maszynę",
+      "labels": "Etykiety QR"
+    },
+    "labels": {
+      "hint": "Wydrukuj i naklej na maszyny. Zeskanowanie kodu aparatem telefonu otwiera formularz zgłoszenia z wybraną maszyną.",
+      "all": "Wszystkie",
+      "print": "Drukuj",
+      "scan": "Awaria? Zeskanuj i zgłoś"
+    },
+    "users": {
+      "hint": "Zmieniaj rolę, obszar i dostęp istniejących osób. Zapraszanie nowych osób dojdzie razem z pełnym logowaniem.",
+      "you": "(Ty)"
+    },
+    "errors": {
+      "invalid": "Uzupełnij poprawnie zaznaczone pola.",
+      "duplicate": "Taki kod już istnieje.",
+      "forbidden": "Nie masz uprawnień do tej operacji.",
+      "cannot_change_self": "Nie możesz odebrać sobie roli kierownika ani dezaktywować własnego konta.",
+      "area_required": "Lider musi mieć przypisany obszar.",
+      "unknown": "Coś poszło nie tak. Spróbuj ponownie."
+    }
   }
 }

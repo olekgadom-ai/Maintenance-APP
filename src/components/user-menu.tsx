@@ -1,6 +1,7 @@
-import { LogOut } from "lucide-react";
+import { LogOut, Settings } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Link } from "@/i18n/navigation";
 import { signOut } from "@/lib/auth/actions";
 import { getCurrentUser } from "@/lib/auth/session";
 
@@ -21,6 +22,16 @@ export async function UserMenu() {
           {t(`Roles.${user.role}.name`)}
         </span>
       </span>
+      {user.role === "manager" && (
+        <Link
+          href="/admin"
+          aria-label={t("Common.admin")}
+          title={t("Common.admin")}
+          className={buttonVariants({ variant: "ghost", size: "icon" })}
+        >
+          <Settings aria-hidden />
+        </Link>
+      )}
       <Button
         type="submit"
         variant="ghost"

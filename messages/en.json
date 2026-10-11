@@ -7,7 +7,8 @@
     "appName": "Maintenance",
     "language": "Language",
     "skipToContent": "Skip to content",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "admin": "Administration"
   },
   "Home": {
     "greeting": "Hi, {name}",
@@ -224,5 +225,67 @@
     "hint": "Check the machine, then confirm the repair or reject it with a description of the problem.",
     "confirm": "Confirm, it works",
     "reject": "Reject repair"
+  },
+  "Admin": {
+    "heading": "Administration",
+    "tabs": {
+      "settings": "Settings",
+      "machines": "Machines",
+      "areas": "Areas",
+      "users": "Users"
+    },
+    "save": "Save",
+    "add": "Add",
+    "saved": "Saved",
+    "inactive": "Inactive",
+    "chooseArea": "Choose an area",
+    "fields": {
+      "code": "Code",
+      "name": "Name",
+      "area": "Area",
+      "criticality": "Criticality",
+      "active": "Active",
+      "role": "Role",
+      "activeAccount": "Account active"
+    },
+    "criticality": {
+      "A": "A – critical",
+      "B": "B – important",
+      "C": "C – auxiliary"
+    },
+    "selfAssign": {
+      "title": "Technicians take tickets from the pool",
+      "hint": "When on, a technician can take a new ticket without the manager assigning it.",
+      "on": "On",
+      "off": "Off",
+      "enable": "Turn on",
+      "disable": "Turn off"
+    },
+    "areas": {
+      "add": "New area",
+      "machines": "{count, plural, =0 {No machines} one {# machine} other {# machines}}"
+    },
+    "machines": {
+      "add": "Add machine",
+      "labels": "QR labels"
+    },
+    "labels": {
+      "hint": "Print and stick on the machines. Scanning a code with a phone camera opens the report form with the machine selected.",
+      "all": "All",
+      "print": "Print",
+      "scan": "Breakdown? Scan to report"
+    },
+    "users": {
+      "hint": "Change the role, area and access of existing people. Inviting new people comes with full sign-in.",
+      "you": "(you)"
+    },
+    "errors": {
+      "invalid": "Correct the highlighted fields.",
+      "duplicate": "This code already exists.",
+      "forbidden": "You are not allowed to do this.",
+      "cannot_change_self": "You cannot remove your own manager role or deactivate yourself.",
+      "area_required": "An area leader needs an area.",
+      "unknown": "Something went wrong. Please try again."
+    }
   }
 }
