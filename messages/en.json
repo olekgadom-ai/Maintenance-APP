@@ -18,7 +18,8 @@
     },
     "empty": "No open tickets",
     "loadError": "Could not load tickets. Try refreshing the page.",
-    "machineStopped": "Machine down"
+    "machineStopped": "Machine down",
+    "report": "Report breakdown"
   },
   "Roles": {
     "area_leader": {
@@ -63,5 +64,85 @@
     "errors": {
       "unavailable": "Sign-in is temporarily unavailable. Please try again shortly."
     }
+  },
+  "Report": {
+    "heading": "Report a breakdown",
+    "back": "Back",
+    "optional": "(optional)",
+    "machine": {
+      "label": "Machine",
+      "scan": "Scan machine QR code",
+      "search": "Search by code or name",
+      "change": "Change",
+      "noResults": "No machines match your search",
+      "required": "Choose a machine",
+      "unknownQr": "This code is not a machine in your area. Pick one from the list."
+    },
+    "scanner": {
+      "title": "Scan QR code",
+      "close": "Close",
+      "hint": "Point the camera at the label on the machine.",
+      "noCamera": "No camera access. Allow camera use in your browser or pick the machine from the list."
+    },
+    "stopped": {
+      "label": "Machine is down",
+      "hint": "Production on this machine has stopped"
+    },
+    "title": {
+      "label": "What happened?",
+      "placeholder": "e.g. Robot stopped with a servo fault",
+      "error": "Describe the problem in a few words (at least 3 characters)"
+    },
+    "description": {
+      "label": "Details",
+      "placeholder": "Error codes, symptoms, what was already checked"
+    },
+    "priority": "Priority",
+    "photos": {
+      "label": "Photos",
+      "take": "Take photo",
+      "pick": "From gallery",
+      "remove": "Remove photo"
+    },
+    "submit": "Send report",
+    "submitting": "Sending…"
+  },
+  "Ticket": {
+    "metaTitle": "Ticket {id}",
+    "back": "All tickets",
+    "reported": "Report sent. The maintenance manager will see it.",
+    "photosFailed": "Report saved, but the photos could not be added.",
+    "machineStopped": "Machine is down",
+    "machine": "Machine",
+    "area": "Area",
+    "reportedBy": "Reported by",
+    "assignee": "Technician",
+    "unassigned": "Unassigned",
+    "description": "Description",
+    "photos": "Photos",
+    "repair": "Repair",
+    "rootCause": "Root cause",
+    "resolution": "Work done",
+    "history": "History",
+    "events": {
+      "created": "Breakdown reported",
+      "assigned": "Technician assigned",
+      "priority_changed": "Priority changed",
+      "status_changed": "Status: {status}"
+    }
+  },
+  "Errors": {
+    "forbidden": "You are not allowed to do this.",
+    "machine_not_found": "Machine not found. Please choose it again.",
+    "ticket_not_found": "Ticket not found.",
+    "invalid_transition": "This change is not possible in the current status.",
+    "use_assign_ticket": "Choose a technician to assign the ticket.",
+    "self_assign_disabled": "Taking tickets yourself is turned off.",
+    "not_assignee": "This ticket is assigned to another technician.",
+    "comment_required": "Add a comment.",
+    "resolution_required": "Describe the work done before finishing.",
+    "invalid_technician": "The selected person is not an active technician.",
+    "ticket_locked": "A closed ticket cannot be edited.",
+    "unknown": "Something went wrong. Please try again."
   }
 }

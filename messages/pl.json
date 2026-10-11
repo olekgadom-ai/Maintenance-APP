@@ -18,7 +18,8 @@
     },
     "empty": "Brak otwartych zgłoszeń",
     "loadError": "Nie udało się wczytać zgłoszeń. Spróbuj odświeżyć stronę.",
-    "machineStopped": "Maszyna stoi"
+    "machineStopped": "Maszyna stoi",
+    "report": "Zgłoś awarię"
   },
   "Roles": {
     "area_leader": {
@@ -63,5 +64,85 @@
     "errors": {
       "unavailable": "Logowanie jest chwilowo niedostępne. Spróbuj ponownie za chwilę."
     }
+  },
+  "Report": {
+    "heading": "Zgłoś awarię",
+    "back": "Wróć",
+    "optional": "(opcjonalnie)",
+    "machine": {
+      "label": "Maszyna",
+      "scan": "Zeskanuj kod QR maszyny",
+      "search": "Szukaj po kodzie lub nazwie",
+      "change": "Zmień",
+      "noResults": "Brak maszyn pasujących do wyszukiwania",
+      "required": "Wybierz maszynę",
+      "unknownQr": "Ten kod nie należy do maszyny z Twojego obszaru. Wybierz maszynę z listy."
+    },
+    "scanner": {
+      "title": "Skanowanie kodu QR",
+      "close": "Zamknij",
+      "hint": "Skieruj aparat na etykietę na maszynie.",
+      "noCamera": "Brak dostępu do aparatu. Zezwól na użycie aparatu w przeglądarce albo wybierz maszynę z listy."
+    },
+    "stopped": {
+      "label": "Maszyna stoi",
+      "hint": "Produkcja na tej maszynie jest zatrzymana"
+    },
+    "title": {
+      "label": "Co się stało?",
+      "placeholder": "np. Robot zatrzymał się z błędem serwa",
+      "error": "Opisz problem w kilku słowach (min. 3 znaki)"
+    },
+    "description": {
+      "label": "Szczegóły",
+      "placeholder": "Kody błędów, objawy, co już sprawdzono"
+    },
+    "priority": "Priorytet",
+    "photos": {
+      "label": "Zdjęcia",
+      "take": "Zrób zdjęcie",
+      "pick": "Z galerii",
+      "remove": "Usuń zdjęcie"
+    },
+    "submit": "Wyślij zgłoszenie",
+    "submitting": "Wysyłanie…"
+  },
+  "Ticket": {
+    "metaTitle": "Zgłoszenie {id}",
+    "back": "Wszystkie zgłoszenia",
+    "reported": "Zgłoszenie wysłane. Kierownik UR je zobaczy.",
+    "photosFailed": "Zgłoszenie zapisane, ale nie udało się dodać zdjęć.",
+    "machineStopped": "Maszyna stoi",
+    "machine": "Maszyna",
+    "area": "Obszar",
+    "reportedBy": "Zgłosił(a)",
+    "assignee": "Technik",
+    "unassigned": "Nieprzypisane",
+    "description": "Opis",
+    "photos": "Zdjęcia",
+    "repair": "Naprawa",
+    "rootCause": "Przyczyna",
+    "resolution": "Wykonane prace",
+    "history": "Historia",
+    "events": {
+      "created": "Zgłoszono awarię",
+      "assigned": "Przypisano technika",
+      "priority_changed": "Zmieniono priorytet",
+      "status_changed": "Status: {status}"
+    }
+  },
+  "Errors": {
+    "forbidden": "Nie masz uprawnień do tej operacji.",
+    "machine_not_found": "Nie znaleziono maszyny. Wybierz ją ponownie.",
+    "ticket_not_found": "Nie znaleziono zgłoszenia.",
+    "invalid_transition": "Tej zmiany nie można wykonać w obecnym statusie.",
+    "use_assign_ticket": "Wybierz technika, aby przypisać zgłoszenie.",
+    "self_assign_disabled": "Samodzielne przyjmowanie zgłoszeń jest wyłączone.",
+    "not_assignee": "To zgłoszenie jest przypisane do innego technika.",
+    "comment_required": "Dodaj komentarz.",
+    "resolution_required": "Opisz wykonane prace przed zakończeniem.",
+    "invalid_technician": "Wybrana osoba nie jest aktywnym technikiem.",
+    "ticket_locked": "Zamkniętego zgłoszenia nie można edytować.",
+    "unknown": "Coś poszło nie tak. Spróbuj ponownie."
   }
 }

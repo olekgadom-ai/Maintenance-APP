@@ -8,7 +8,7 @@ export type CurrentUser = {
   id: string;
   fullName: string;
   role: Role;
-  area: { code: string; name: string } | null;
+  area: { id: string; code: string; name: string } | null;
 };
 
 // Data access layer: the single place that turns the session cookie into a user.
@@ -21,7 +21,7 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("id, full_name, role, active, areas(code, name)")
+    .select("id, full_name, role, active, areas(id, code, name)")
     .eq("id", userId)
     .single();
   if (!profile?.active) return null;
