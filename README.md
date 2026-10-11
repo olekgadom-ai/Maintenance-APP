@@ -11,7 +11,7 @@ Next.js 16 (App Router, Cache Components), TypeScript, Tailwind CSS 4, next-intl
 ```bash
 npm install
 cp .env.example .env.local
-npm run dev          # http://localhost:3000 → przekierowanie na /pl lub /en
+npm run dev          # http://localhost:3000/UR → przekierowanie na /UR/pl lub /UR/en
 ```
 
 Za proxy HTTP (np. w chmurowym środowisku Claude Code) Node nie używa proxy sam z siebie: uruchamiaj z `NODE_USE_ENV_PROXY=1 npm run dev`.

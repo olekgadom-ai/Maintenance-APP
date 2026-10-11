@@ -60,6 +60,7 @@ function redirectWithCookies(
 }
 
 export const config = {
-  // Skip API routes, Next internals and files with an extension (icons, manifest).
-  matcher: "/((?!api|_next|_vercel|.*\\..*).*)",
+  // The base path root ("/UR") needs its own entry; otherwise skip API routes,
+  // Next internals and files with an extension (icons, manifest).
+  matcher: ["/", "/((?!api|_next|_vercel|.*\\..*).*)"],
 };
