@@ -77,6 +77,44 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         </p>
       ) : isManager ? (
         <ManagerBoard tickets={tickets} technicians={technicians} now={now} />
+      ) : user.role === "technician" ? (
+        <div className="mt-6 grid max-w-3xl gap-8">
+          {[
+            {
+              key: "mine",
+              items: tickets.filter((x) => x.status !== "new"),
+            },
+            {
+              key: "pool",
+              items: tickets.filter((x) => x.status === "new"),
+            },
+          ].map(({ key, items }) => (
+            <section key={key} aria-labelledby={`tech-${key}`}>
+              <h2
+                id={`tech-${key}`}
+                className="mb-3 flex items-center gap-2 text-sm font-semibold"
+              >
+                {t(key as "mine" | "pool")}
+                <span className="inline-grid h-6 min-w-6 place-items-center rounded-full bg-surface-muted px-1.5 text-xs text-muted-foreground">
+                  {items.length}
+                </span>
+              </h2>
+              {items.length === 0 ? (
+                <p className="rounded-xl border border-dashed px-4 py-6 text-center text-sm text-muted-foreground">
+                  {key === "mine" ? t("emptyMine") : t("empty")}
+                </p>
+              ) : (
+                <ul className="grid gap-3">
+                  {items.map((ticket) => (
+                    <li key={ticket.id}>
+                      <TicketCard ticket={ticket} now={now} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          ))}
+        </div>
       ) : tickets.length === 0 ? (
         <div className="mt-8 flex max-w-3xl flex-col items-center rounded-xl border border-dashed px-6 py-12 text-center">
           <Inbox aria-hidden className="size-8 text-muted-foreground" />

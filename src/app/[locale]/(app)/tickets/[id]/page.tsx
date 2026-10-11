@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { BackLink } from "@/components/back-link";
 import { LiveRefresh } from "@/components/live-refresh";
+import { TechnicianPanel } from "@/components/technician-panel";
 import { PriorityBadge, StatusBadge } from "@/components/status-badge";
 import {
   AssignForm,
@@ -11,9 +12,14 @@ import {
   TransitionButton,
 } from "@/components/ticket-actions";
 import { requireUser } from "@/lib/auth/session";
+import { formatMinutes, workMinutes } from "@/lib/duration";
+import { removePart } from "@/lib/tickets/actions";
 import { createClient } from "@/lib/supabase/server";
 import { getTechnicians } from "@/lib/tickets/queries";
+import type { PART_UNITS } from "@/lib/tickets/schemas";
 import { ASSIGNABLE, type Priority } from "@/lib/tickets/status";
+
+type PartUnit = (typeof PART_UNITS)[number];
 
 const UUID = /^[0-9a-f-]{36}$/i;
 
@@ -33,9 +39,11 @@ export default async function TicketPage({
   const user = await requireUser(locale);
   if (!UUID.test(id)) notFound();
 
-  const [t, ta, ts, tp, format, supabase, query] = await Promise.all([
+  const [t, ta, tt, tu, ts, tp, format, supabase, query] = await Promise.all([
     getTranslations("Ticket"),
     getTranslations("Actions"),
+    getTranslations("Tech"),
+    getTranslations("Tech.parts.units"),
     getTranslations("Status"),
     getTranslations("Priority"),
     getFormatter(),
@@ -52,11 +60,15 @@ export default async function TicketPage({
        machines(code, name), areas(name),
        reporter:profiles!tickets_reported_by_fkey(full_name),
        assignee:profiles!tickets_assigned_to_fkey(full_name),
-       ticket_attachments(id, storage_path, kind),
+       ticket_attachments(id, storage_path, kind, created_at),
+       ticket_work_logs(started_at, ended_at),
+       ticket_parts(id, name, part_number, quantity, unit, added_by, created_at),
        ticket_events(id, event_type, from_status, to_status, comment, payload, created_at, actor:profiles(full_name))`,
     )
     .eq("id", id)
     .order("created_at", { referencedTable: "ticket_events" })
+    .order("created_at", { referencedTable: "ticket_attachments" })
+    .order("created_at", { referencedTable: "ticket_parts" })
     .maybeSingle();
   if (!ticket) notFound();
 
@@ -64,13 +76,49 @@ export default async function TicketPage({
   const { data: signed } = paths.length
     ? await supabase.storage.from("ticket-photos").createSignedUrls(paths, 3600)
     : { data: [] };
-  const photos = (signed ?? []).flatMap((s) =>
-    s.signedUrl && s.path ? [{ path: s.path, url: s.signedUrl }] : [],
+  const urls = new Map(
+    (signed ?? []).flatMap((s) =>
+      s.signedUrl && s.path ? [[s.path, s.signedUrl] as const] : [],
+    ),
   );
+  const photosOf = (kind: string) =>
+    ticket.ticket_attachments.flatMap((a) =>
+      a.kind === kind && urls.has(a.storage_path)
+        ? [{ path: a.storage_path, url: urls.get(a.storage_path)! }]
+        : [],
+    );
+  const photos = photosOf("report");
+  const repairPhotos = photosOf("repair");
 
   const isManager = user.role === "manager";
   const technicians = isManager ? await getTechnicians(supabase) : [];
   const open = !["confirmed", "closed", "cancelled"].includes(ticket.status);
+  const now = new Date();
+  const minutes = workMinutes(ticket.ticket_work_logs, now);
+  const runningSince =
+    ticket.ticket_work_logs.find((l) => !l.ended_at)?.started_at ?? null;
+
+  const isTechnician = user.role === "technician";
+  const isMine = ticket.assigned_to === user.id;
+  const canTake =
+    isTechnician &&
+    ticket.status === "new" &&
+    Boolean(
+      (
+        await supabase
+          .from("app_settings")
+          .select("allow_technician_self_assign")
+          .single()
+      ).data?.allow_technician_self_assign,
+    );
+  // Reason for the current hold or rejection, shown to the technician.
+  const lastComment =
+    ticket.ticket_events.findLast(
+      (e) => e.to_status === ticket.status && e.comment,
+    )?.comment ?? null;
+  const canEditParts =
+    isMine &&
+    ["assigned", "in_progress", "on_hold", "rejected"].includes(ticket.status);
 
   const when = (iso: string) =>
     format.dateTime(new Date(iso), { dateStyle: "medium", timeStyle: "short" });
@@ -131,7 +179,19 @@ export default async function TicketPage({
             <span className="text-muted-foreground">{t("unassigned")}</span>
           )}
         </Field>
+        {ticket.ticket_work_logs.length > 0 && (
+          <Field label={t("workTime")}>{formatMinutes(minutes)}</Field>
+        )}
       </dl>
+
+      {isTechnician && ((isMine && canEditParts) || canTake) && (
+        <TechnicianPanel
+          ticket={ticket}
+          canTake={canTake}
+          runningSince={runningSince}
+          lastComment={lastComment}
+        />
+      )}
 
       {isManager && (
         <section
@@ -187,38 +247,62 @@ export default async function TicketPage({
 
       {photos.length > 0 && (
         <Section title={t("photos")}>
-          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-            {photos.map((photo) => (
-              <li key={photo.path}>
-                <a
-                  href={photo.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="block aspect-square overflow-hidden rounded-lg border"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element -- short-lived signed URL */}
-                  <img
-                    src={photo.url}
-                    alt=""
-                    className="size-full object-cover"
-                  />
-                </a>
-              </li>
-            ))}
-          </ul>
+          <PhotoGrid photos={photos} />
         </Section>
       )}
 
-      {(ticket.root_cause || ticket.resolution) && (
+      {(ticket.root_cause ||
+        ticket.resolution ||
+        ticket.ticket_parts.length > 0 ||
+        repairPhotos.length > 0) && (
         <Section title={t("repair")}>
-          <dl className="grid gap-3">
+          <dl className="grid gap-4">
             {ticket.root_cause && (
               <Field label={t("rootCause")}>{ticket.root_cause}</Field>
             )}
             {ticket.resolution && (
-              <Field label={t("resolution")}>{ticket.resolution}</Field>
+              <Field label={t("resolution")}>
+                <span className="whitespace-pre-line">{ticket.resolution}</span>
+              </Field>
+            )}
+            {ticket.ticket_parts.length > 0 && (
+              <Field label={t("parts")}>
+                <ul className="mt-1 divide-y rounded-lg border">
+                  {ticket.ticket_parts.map((part) => (
+                    <li
+                      key={part.id}
+                      className="flex items-center gap-3 px-3 py-2"
+                    >
+                      <span className="min-w-0 flex-1">
+                        <span className="font-medium">{part.name}</span>
+                        {part.part_number && (
+                          <span className="ml-2 font-mono text-xs text-muted-foreground">
+                            {part.part_number}
+                          </span>
+                        )}
+                      </span>
+                      <span className="text-sm whitespace-nowrap tabular-nums">
+                        {format.number(part.quantity)}{" "}
+                        {tu(part.unit as PartUnit)}
+                      </span>
+                      {canEditParts && part.added_by === user.id && (
+                        <form action={removePart}>
+                          <input type="hidden" name="partId" value={part.id} />
+                          <button
+                            type="submit"
+                            className="h-9 cursor-pointer rounded-md px-2 text-sm text-muted-foreground hover:bg-surface-muted hover:text-status-rejected"
+                          >
+                            {tt("parts.remove")}
+                          </button>
+                        </form>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </Field>
             )}
           </dl>
+          {repairPhotos.length > 0 && <PhotoGrid photos={repairPhotos} />}
         </Section>
       )}
 
@@ -301,4 +385,24 @@ function priorityChange(
 ): { from: string; to: string } {
   const { from, to } = (payload ?? {}) as { from?: Priority; to?: Priority };
   return { from: from ? tp(from) : "?", to: to ? tp(to) : "?" };
+}
+
+function PhotoGrid({ photos }: { photos: { path: string; url: string }[] }) {
+  return (
+    <ul className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+      {photos.map((photo) => (
+        <li key={photo.path}>
+          <a
+            href={photo.url}
+            target="_blank"
+            rel="noreferrer"
+            className="block aspect-square overflow-hidden rounded-lg border"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element -- short-lived signed URL */}
+            <img src={photo.url} alt="" className="size-full object-cover" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
 }

@@ -7,7 +7,13 @@ import { redirect } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
 import { toTicketError, type TicketError } from "./errors";
-import { isAcceptedPhoto, MAX_PHOTOS, reportTicketSchema } from "./schemas";
+import {
+  isAcceptedPhoto,
+  MAX_PHOTOS,
+  partSchema,
+  reportTicketSchema,
+  resolveTicketSchema,
+} from "./schemas";
 import { PRIORITIES, TICKET_STATUSES } from "./status";
 
 export type ReportTicketState = {
@@ -22,6 +28,45 @@ const PHOTO_EXTENSIONS: Record<string, string> = {
   "image/heic": "heic",
   "image/heif": "heif",
 };
+
+type Client = Awaited<ReturnType<typeof createClient>>;
+
+function localeOf(formData: FormData) {
+  const locale = formData.get("locale");
+  return typeof locale === "string" && hasLocale(routing.locales, locale)
+    ? locale
+    : routing.defaultLocale;
+}
+
+// Uploads accepted photos to the ticket's folder and records them.
+// Returns true if any photo failed, so callers can warn without failing the step.
+async function uploadPhotos(
+  supabase: Client,
+  ticketId: string,
+  entries: FormDataEntryValue[],
+  kind: "report" | "repair",
+): Promise<boolean> {
+  const photos = entries
+    .filter((f): f is File => f instanceof File && isAcceptedPhoto(f))
+    .slice(0, MAX_PHOTOS);
+  let failed = false;
+  for (const photo of photos) {
+    const path = `${ticketId}/${crypto.randomUUID()}.${PHOTO_EXTENSIONS[photo.type] ?? "jpg"}`;
+    const upload = await supabase.storage
+      .from("ticket-photos")
+      .upload(path, photo, { contentType: photo.type });
+    const insert = upload.error
+      ? upload
+      : await supabase
+          .from("ticket_attachments")
+          .insert({ ticket_id: ticketId, storage_path: path, kind });
+    if (insert.error) {
+      console.error("Photo upload failed", ticketId, insert.error.message);
+      failed = true;
+    }
+  }
+  return failed;
+}
 
 export async function reportTicket(
   _prev: ReportTicketState,
@@ -53,41 +98,26 @@ export async function reportTicket(
   if (error || !ticket) return { error: toTicketError(error) };
 
   // The ticket exists from here on; a failed photo must not lose the report.
-  const photos = formData
-    .getAll("photos")
-    .filter((f): f is File => f instanceof File && isAcceptedPhoto(f))
-    .slice(0, MAX_PHOTOS);
-  let photosFailed = false;
-  for (const photo of photos) {
-    const path = `${ticket.id}/${crypto.randomUUID()}.${PHOTO_EXTENSIONS[photo.type] ?? "jpg"}`;
-    const upload = await supabase.storage
-      .from("ticket-photos")
-      .upload(path, photo, { contentType: photo.type });
-    const insert = upload.error
-      ? upload
-      : await supabase
-          .from("ticket_attachments")
-          .insert({ ticket_id: ticket.id, storage_path: path, kind: "report" });
-    if (insert.error) {
-      console.error("Photo upload failed", ticket.id, insert.error.message);
-      photosFailed = true;
-    }
-  }
+  const photosFailed = await uploadPhotos(
+    supabase,
+    ticket.id,
+    formData.getAll("photos"),
+    "report",
+  );
 
-  const locale = formData.get("locale");
-  const prefix =
-    typeof locale === "string" && hasLocale(routing.locales, locale)
-      ? locale
-      : routing.defaultLocale;
   redirect(
-    `/${prefix}/tickets/${ticket.id}${photosFailed ? "?photos=failed" : "?reported=1"}`,
+    `/${localeOf(formData)}/tickets/${ticket.id}${photosFailed ? "?photos=failed" : "?reported=1"}`,
   );
 }
 
 // Workflow actions ------------------------------------------------------------
 // Each returns an error key for the form, or refreshes the page on success.
 
-export type ActionState = { error: TicketError | null; ok?: boolean };
+export type ActionState = {
+  error: TicketError | "invalid" | null;
+  ok?: boolean;
+  fields?: string[];
+};
 
 const uuid = z.uuid();
 
@@ -150,4 +180,95 @@ export async function transitionTicket(
   if (error) return { error: toTicketError(error) };
   refresh();
   return { error: null, ok: true };
+}
+
+// Technician finishes the repair: records cause and work done, adds repair
+// photos, then hands the ticket to the area leader for sign-off.
+export async function resolveTicket(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const parsed = resolveTicketSchema.safeParse({
+    ticketId: formData.get("ticketId"),
+    rootCause: formData.get("rootCause") ?? undefined,
+    resolution: formData.get("resolution"),
+  });
+  if (!parsed.success) {
+    return {
+      error: "invalid",
+      fields: [...new Set(parsed.error.issues.map((i) => String(i.path[0])))],
+    };
+  }
+  const { ticketId, rootCause, resolution } = parsed.data;
+
+  const supabase = await createClient();
+  const { data: updated, error: updateError } = await supabase
+    .from("tickets")
+    .update({ root_cause: rootCause || null, resolution })
+    .eq("id", ticketId)
+    .select("id");
+  if (updateError) return { error: toTicketError(updateError) };
+  if (!updated?.length) return { error: "not_assignee" };
+
+  const photosFailed = await uploadPhotos(
+    supabase,
+    ticketId,
+    formData.getAll("photos"),
+    "repair",
+  );
+
+  const { error } = await supabase.rpc("transition_ticket", {
+    p_ticket_id: ticketId,
+    p_to: "resolved",
+  });
+  if (error) return { error: toTicketError(error) };
+  if (photosFailed) {
+    redirect(`/${localeOf(formData)}/tickets/${ticketId}?photos=failed`);
+  }
+  refresh();
+  return { error: null, ok: true };
+}
+
+export async function addPart(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const parsed = partSchema.safeParse({
+    ticketId: formData.get("ticketId"),
+    name: formData.get("name"),
+    partNumber: formData.get("partNumber") ?? undefined,
+    quantity: formData.get("quantity"),
+    unit: formData.get("unit") ?? undefined,
+  });
+  if (!parsed.success) {
+    return {
+      error: "invalid",
+      fields: [...new Set(parsed.error.issues.map((i) => String(i.path[0])))],
+    };
+  }
+  const part = parsed.data;
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("ticket_parts").insert({
+    ticket_id: part.ticketId,
+    name: part.name,
+    part_number: part.partNumber || null,
+    quantity: part.quantity,
+    unit: part.unit,
+  });
+  // RLS rejects parts on tickets the user is not working on.
+  if (error)
+    return {
+      error: error.code === "42501" ? "not_assignee" : toTicketError(error),
+    };
+  refresh();
+  return { error: null, ok: true };
+}
+
+export async function removePart(formData: FormData) {
+  const partId = uuid.safeParse(formData.get("partId"));
+  if (!partId.success) return;
+  const supabase = await createClient();
+  await supabase.from("ticket_parts").delete().eq("id", partId.data);
+  refresh();
 }

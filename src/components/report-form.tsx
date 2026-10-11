@@ -1,30 +1,19 @@
 "use client";
 
-import {
-  Camera,
-  ImagePlus,
-  LoaderCircle,
-  QrCode,
-  Search,
-  TriangleAlert,
-  X,
-} from "lucide-react";
+import { LoaderCircle, QrCode, Search, TriangleAlert } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import {
   startTransition,
   useActionState,
-  useEffect,
   useMemo,
-  useRef,
   useState,
   type FormEvent,
 } from "react";
+import { PhotoPicker, usePhotoSelection } from "@/components/photo-picker";
 import { QrScanner } from "@/components/qr-scanner";
 import { Button } from "@/components/ui/button";
-import { downscaleImage } from "@/lib/images";
 import { parseMachineQr } from "@/lib/machines/qr";
 import { reportTicket, type ReportTicketState } from "@/lib/tickets/actions";
-import { MAX_PHOTOS } from "@/lib/tickets/schemas";
 import { PRIORITIES, type Priority } from "@/lib/tickets/status";
 import { cn } from "@/lib/utils";
 
@@ -35,8 +24,6 @@ export type MachineOption = {
   qrToken: string;
   areaName: string;
 };
-
-type Photo = { file: File; url: string };
 
 const priorityActive: Record<Priority, string> = {
   critical: "border-priority-critical bg-priority-critical text-white",
@@ -69,14 +56,8 @@ export function ReportForm({
   const [scanning, setScanning] = useState(false);
   const [scanError, setScanError] = useState(false);
   const [priority, setPriority] = useState<Priority>("normal");
-  const [photos, setPhotos] = useState<Photo[]>([]);
-  const [processing, setProcessing] = useState(false);
-  // Object URLs for previews, released when the form unmounts.
-  const previewUrls = useRef(new Set<string>());
-  useEffect(() => {
-    const urls = previewUrls.current;
-    return () => urls.forEach((url) => URL.revokeObjectURL(url));
-  }, []);
+  const photoSelection = usePhotoSelection();
+  const { photos, processing } = photoSelection;
 
   const selected = machines.find((m) => m.id === machineId);
   const filtered = useMemo(() => {
@@ -104,29 +85,6 @@ export function ReportForm({
     } else {
       setScanError(true);
     }
-  }
-
-  async function addPhotos(files: FileList | null) {
-    if (!files?.length) return;
-    setProcessing(true);
-    const room = MAX_PHOTOS - photos.length;
-    const next = await Promise.all(
-      [...files].slice(0, room).map(async (f) => {
-        const file = await downscaleImage(f);
-        const url = URL.createObjectURL(file);
-        previewUrls.current.add(url);
-        return { file, url };
-      }),
-    );
-    setPhotos((prev) => [...prev, ...next]);
-    setProcessing(false);
-  }
-
-  function removePhoto(index: number) {
-    const url = photos[index].url;
-    URL.revokeObjectURL(url);
-    previewUrls.current.delete(url);
-    setPhotos((prev) => prev.filter((p) => p.url !== url));
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -326,65 +284,7 @@ export function ReportForm({
             {t("optional")}
           </span>
         </legend>
-        <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
-          {photos.map((photo, i) => (
-            <div
-              key={photo.url}
-              className="relative aspect-square overflow-hidden rounded-lg border"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element -- local blob preview */}
-              <img src={photo.url} alt="" className="size-full object-cover" />
-              <button
-                type="button"
-                onClick={() => removePhoto(i)}
-                aria-label={t("photos.remove")}
-                className="absolute top-1 right-1 grid size-9 cursor-pointer place-items-center rounded-full bg-black/60 text-white"
-              >
-                <X aria-hidden className="size-4" />
-              </button>
-            </div>
-          ))}
-          {photos.length < MAX_PHOTOS && (
-            <>
-              <label className="grid aspect-square cursor-pointer place-items-center rounded-lg border border-dashed bg-surface text-muted-foreground hover:text-foreground">
-                <span className="grid justify-items-center gap-1 text-xs">
-                  {processing ? (
-                    <LoaderCircle aria-hidden className="size-6 animate-spin" />
-                  ) : (
-                    <Camera aria-hidden className="size-6" />
-                  )}
-                  {t("photos.take")}
-                </span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  capture="environment"
-                  className="sr-only"
-                  onChange={(e) => {
-                    addPhotos(e.target.files);
-                    e.target.value = "";
-                  }}
-                />
-              </label>
-              <label className="grid aspect-square cursor-pointer place-items-center rounded-lg border border-dashed bg-surface text-muted-foreground hover:text-foreground">
-                <span className="grid justify-items-center gap-1 text-xs">
-                  <ImagePlus aria-hidden className="size-6" />
-                  {t("photos.pick")}
-                </span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  className="sr-only"
-                  onChange={(e) => {
-                    addPhotos(e.target.files);
-                    e.target.value = "";
-                  }}
-                />
-              </label>
-            </>
-          )}
-        </div>
+        <PhotoPicker selection={photoSelection} />
       </fieldset>
 
       {/* Submit */}

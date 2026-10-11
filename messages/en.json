@@ -19,7 +19,10 @@
     "empty": "No open tickets",
     "loadError": "Could not load tickets. Try refreshing the page.",
     "machineStopped": "Machine down",
-    "report": "Report breakdown"
+    "report": "Report breakdown",
+    "mine": "My tickets",
+    "pool": "New tickets",
+    "emptyMine": "You have no assigned tickets."
   },
   "Roles": {
     "area_leader": {
@@ -111,7 +114,7 @@
     "metaTitle": "Ticket {id}",
     "back": "All tickets",
     "reported": "Report sent. The maintenance manager will see it.",
-    "photosFailed": "Report saved, but the photos could not be added.",
+    "photosFailed": "Saved, but the photos could not be added.",
     "machineStopped": "Machine is down",
     "machine": "Machine",
     "area": "Area",
@@ -130,7 +133,9 @@
       "priority_changed": "Priority: {from} → {to}",
       "status_changed": "Status: {status}"
     },
-    "system": "System"
+    "system": "System",
+    "workTime": "Work time",
+    "parts": "Parts used"
   },
   "Errors": {
     "forbidden": "You are not allowed to do this.",
@@ -144,7 +149,8 @@
     "resolution_required": "Describe the work done before finishing.",
     "invalid_technician": "The selected person is not an active technician.",
     "ticket_locked": "A closed ticket cannot be edited.",
-    "unknown": "Something went wrong. Please try again."
+    "unknown": "Something went wrong. Please try again.",
+    "invalid": "Fill in the required fields."
   },
   "Board": {
     "columns": {
@@ -170,6 +176,44 @@
       "cancelled": "Why are you cancelling this ticket?",
       "rejected": "What is still not working?",
       "on_hold": "What are you waiting for? (e.g. parts)"
+    }
+  },
+  "Tech": {
+    "heading": "Your actions",
+    "take": "Take this ticket",
+    "start": "Start work",
+    "resume": "Resume work",
+    "restart": "Resume repair",
+    "hold": "Put on hold",
+    "rejectedBy": "The leader rejected the repair:",
+    "holdReason": "On hold:",
+    "running": "Working since {time}",
+    "resolve": {
+      "heading": "Finish the repair",
+      "rootCause": "Root cause",
+      "rootCausePlaceholder": "e.g. faulty axis 3 encoder",
+      "resolution": "Work done",
+      "resolutionPlaceholder": "What was done, replaced, adjusted",
+      "resolutionError": "Describe the work done (at least 3 characters)",
+      "photos": "Photos after repair",
+      "submit": "Finish and hand over to leader"
+    },
+    "parts": {
+      "heading": "Parts used",
+      "empty": "No parts added.",
+      "name": "Part name",
+      "number": "Part number",
+      "quantity": "Quantity",
+      "unit": "Unit",
+      "add": "Add part",
+      "remove": "Remove",
+      "units": {
+        "pcs": "pcs",
+        "m": "m",
+        "l": "l",
+        "kg": "kg",
+        "set": "set"
+      }
     }
   }
 }

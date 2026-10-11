@@ -61,3 +61,27 @@ describe("photos and errors", () => {
     expect(toTicketError(null)).toBe("unknown");
   });
 });
+
+describe("technician forms", () => {
+  const ticketId = "6f1f8f1e-6a8e-4f7a-9d55-8a3c1f0b2a11";
+
+  it("requires a description of the work done", async () => {
+    const { resolveTicketSchema } = await import("./schemas");
+    expect(
+      resolveTicketSchema.safeParse({ ticketId, resolution: " " }).success,
+    ).toBe(false);
+    expect(
+      resolveTicketSchema.parse({ ticketId, resolution: "Wymiana enkodera" })
+        .rootCause,
+    ).toBe("");
+  });
+
+  it("parses part quantities from form strings", async () => {
+    const { partSchema } = await import("./schemas");
+    const part = partSchema.parse({ ticketId, name: "Enkoder", quantity: "2" });
+    expect(part).toMatchObject({ quantity: 2, unit: "pcs", partNumber: "" });
+    expect(
+      partSchema.safeParse({ ticketId, name: "x", quantity: "0" }).success,
+    ).toBe(false);
+  });
+});

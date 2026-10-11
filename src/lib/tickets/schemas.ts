@@ -24,3 +24,19 @@ export function isAcceptedPhoto(file: File) {
     file.type.startsWith("image/")
   );
 }
+
+export const resolveTicketSchema = z.object({
+  ticketId: z.uuid(),
+  rootCause: z.string().trim().max(2000).optional().default(""),
+  resolution: z.string().trim().min(3).max(5000),
+});
+
+export const PART_UNITS = ["pcs", "m", "l", "kg", "set"] as const;
+
+export const partSchema = z.object({
+  ticketId: z.uuid(),
+  name: z.string().trim().min(1).max(200),
+  partNumber: z.string().trim().max(100).optional().default(""),
+  quantity: z.coerce.number().positive().max(100000),
+  unit: z.enum(PART_UNITS).default("pcs"),
+});

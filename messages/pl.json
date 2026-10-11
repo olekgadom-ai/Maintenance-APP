@@ -19,7 +19,10 @@
     "empty": "Brak otwartych zgłoszeń",
     "loadError": "Nie udało się wczytać zgłoszeń. Spróbuj odświeżyć stronę.",
     "machineStopped": "Maszyna stoi",
-    "report": "Zgłoś awarię"
+    "report": "Zgłoś awarię",
+    "mine": "Moje zlecenia",
+    "pool": "Nowe zgłoszenia",
+    "emptyMine": "Nie masz przypisanych zleceń."
   },
   "Roles": {
     "area_leader": {
@@ -111,7 +114,7 @@
     "metaTitle": "Zgłoszenie {id}",
     "back": "Wszystkie zgłoszenia",
     "reported": "Zgłoszenie wysłane. Kierownik UR je zobaczy.",
-    "photosFailed": "Zgłoszenie zapisane, ale nie udało się dodać zdjęć.",
+    "photosFailed": "Zapisano, ale nie udało się dodać zdjęć.",
     "machineStopped": "Maszyna stoi",
     "machine": "Maszyna",
     "area": "Obszar",
@@ -130,7 +133,9 @@
       "priority_changed": "Priorytet: {from} → {to}",
       "status_changed": "Status: {status}"
     },
-    "system": "System"
+    "system": "System",
+    "workTime": "Czas pracy",
+    "parts": "Użyte części"
   },
   "Errors": {
     "forbidden": "Nie masz uprawnień do tej operacji.",
@@ -144,7 +149,8 @@
     "resolution_required": "Opisz wykonane prace przed zakończeniem.",
     "invalid_technician": "Wybrana osoba nie jest aktywnym technikiem.",
     "ticket_locked": "Zamkniętego zgłoszenia nie można edytować.",
-    "unknown": "Coś poszło nie tak. Spróbuj ponownie."
+    "unknown": "Coś poszło nie tak. Spróbuj ponownie.",
+    "invalid": "Uzupełnij wymagane pola."
   },
   "Board": {
     "columns": {
@@ -170,6 +176,44 @@
       "cancelled": "Dlaczego anulujesz zgłoszenie?",
       "rejected": "Co nadal nie działa?",
       "on_hold": "Na co czekasz? (np. części)"
+    }
+  },
+  "Tech": {
+    "heading": "Twoje działania",
+    "take": "Weź zgłoszenie",
+    "start": "Rozpocznij pracę",
+    "resume": "Wznów pracę",
+    "restart": "Wróć do naprawy",
+    "hold": "Wstrzymaj",
+    "rejectedBy": "Lider odrzucił naprawę:",
+    "holdReason": "Wstrzymane:",
+    "running": "Praca w toku od {time}",
+    "resolve": {
+      "heading": "Zakończ naprawę",
+      "rootCause": "Przyczyna awarii",
+      "rootCausePlaceholder": "np. uszkodzony enkoder osi 3",
+      "resolution": "Wykonane prace",
+      "resolutionPlaceholder": "Co zostało zrobione, wymienione, ustawione",
+      "resolutionError": "Opisz wykonane prace (min. 3 znaki)",
+      "photos": "Zdjęcia po naprawie",
+      "submit": "Zakończ i przekaż liderowi"
+    },
+    "parts": {
+      "heading": "Użyte części",
+      "empty": "Nie dodano części.",
+      "name": "Nazwa części",
+      "number": "Numer katalogowy",
+      "quantity": "Ilość",
+      "unit": "Jednostka",
+      "add": "Dodaj część",
+      "remove": "Usuń",
+      "units": {
+        "pcs": "szt.",
+        "m": "m",
+        "l": "l",
+        "kg": "kg",
+        "set": "kpl."
+      }
     }
   }
 }
