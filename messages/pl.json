@@ -1,0 +1,291 @@
+{
+  "Metadata": {
+    "title": "Utrzymanie Ruchu",
+    "description": "Zgłaszanie i obsługa awarii maszyn na zakładzie produkcyjnym"
+  },
+  "Common": {
+    "appName": "Utrzymanie Ruchu",
+    "language": "Język",
+    "skipToContent": "Przejdź do treści",
+    "signOut": "Wyloguj",
+    "admin": "Administracja"
+  },
+  "Home": {
+    "greeting": "Cześć, {name}",
+    "heading": {
+      "area_leader": "Zgłoszenia w obszarze {area}",
+      "technician": "Moje zlecenia i nowe zgłoszenia",
+      "manager": "Otwarte zgłoszenia w zakładzie"
+    },
+    "empty": "Brak otwartych zgłoszeń",
+    "loadError": "Nie udało się wczytać zgłoszeń. Spróbuj odświeżyć stronę.",
+    "machineStopped": "Maszyna stoi",
+    "report": "Zgłoś awarię",
+    "mine": "Moje zlecenia",
+    "pool": "Nowe zgłoszenia",
+    "emptyMine": "Nie masz przypisanych zleceń.",
+    "toConfirm": "Do potwierdzenia",
+    "inArea": "Pozostałe zgłoszenia"
+  },
+  "Roles": {
+    "area_leader": {
+      "name": "Lider obszaru",
+      "summary": "Zgłasza awarie ze swojej linii i potwierdza ich usunięcie."
+    },
+    "technician": {
+      "name": "Technik UR",
+      "summary": "Przyjmuje zgłoszenia, usuwa awarie i opisuje wykonane prace."
+    },
+    "manager": {
+      "name": "Kierownik UR",
+      "summary": "Przydziela zadania, pilnuje priorytetów i rozlicza zespół."
+    }
+  },
+  "Status": {
+    "new": "Nowe",
+    "assigned": "Przydzielone",
+    "in_progress": "W realizacji",
+    "on_hold": "Wstrzymane",
+    "resolved": "Do potwierdzenia",
+    "rejected": "Odrzucone",
+    "confirmed": "Potwierdzone",
+    "closed": "Zamknięte",
+    "cancelled": "Anulowane"
+  },
+  "Priority": {
+    "critical": "Krytyczny",
+    "high": "Wysoki",
+    "normal": "Normalny",
+    "low": "Niski"
+  },
+  "NotFound": {
+    "title": "Nie znaleziono strony",
+    "back": "Wróć na stronę główną"
+  },
+  "Login": {
+    "title": "Zaloguj się",
+    "lead": "Wybierz rolę, w której chcesz pracować.",
+    "leaderArea": "Montaż",
+    "demoNotice": "Wersja demonstracyjna: logowanie bez hasła. Każda rola to wspólne konto testowe.",
+    "errors": {
+      "unavailable": "Logowanie jest chwilowo niedostępne. Spróbuj ponownie za chwilę."
+    }
+  },
+  "Report": {
+    "heading": "Zgłoś awarię",
+    "back": "Wróć",
+    "optional": "(opcjonalnie)",
+    "machine": {
+      "label": "Maszyna",
+      "scan": "Zeskanuj kod QR maszyny",
+      "search": "Szukaj po kodzie lub nazwie",
+      "change": "Zmień",
+      "noResults": "Brak maszyn pasujących do wyszukiwania",
+      "required": "Wybierz maszynę",
+      "unknownQr": "Ten kod nie należy do maszyny z Twojego obszaru. Wybierz maszynę z listy."
+    },
+    "scanner": {
+      "title": "Skanowanie kodu QR",
+      "close": "Zamknij",
+      "hint": "Skieruj aparat na etykietę na maszynie.",
+      "noCamera": "Brak dostępu do aparatu. Zezwól na użycie aparatu w przeglądarce albo wybierz maszynę z listy."
+    },
+    "stopped": {
+      "label": "Maszyna stoi",
+      "hint": "Produkcja na tej maszynie jest zatrzymana"
+    },
+    "title": {
+      "label": "Co się stało?",
+      "placeholder": "np. Robot zatrzymał się z błędem serwa",
+      "error": "Opisz problem w kilku słowach (min. 3 znaki)"
+    },
+    "description": {
+      "label": "Szczegóły",
+      "placeholder": "Kody błędów, objawy, co już sprawdzono"
+    },
+    "priority": "Priorytet",
+    "photos": {
+      "label": "Zdjęcia",
+      "take": "Zrób zdjęcie",
+      "pick": "Z galerii",
+      "remove": "Usuń zdjęcie"
+    },
+    "submit": "Wyślij zgłoszenie",
+    "submitting": "Wysyłanie…"
+  },
+  "Ticket": {
+    "metaTitle": "Zgłoszenie {id}",
+    "back": "Wszystkie zgłoszenia",
+    "reported": "Zgłoszenie wysłane. Kierownik UR je zobaczy.",
+    "photosFailed": "Zapisano, ale nie udało się dodać zdjęć.",
+    "machineStopped": "Maszyna stoi",
+    "machine": "Maszyna",
+    "area": "Obszar",
+    "reportedBy": "Zgłosił(a)",
+    "assignee": "Technik",
+    "unassigned": "Nieprzypisane",
+    "description": "Opis",
+    "photos": "Zdjęcia",
+    "repair": "Naprawa",
+    "rootCause": "Przyczyna",
+    "resolution": "Wykonane prace",
+    "history": "Historia",
+    "events": {
+      "created": "Zgłoszono awarię",
+      "assigned": "Przypisano technika",
+      "priority_changed": "Priorytet: {from} → {to}",
+      "status_changed": "Status: {status}"
+    },
+    "system": "System",
+    "workTime": "Czas pracy",
+    "parts": "Użyte części",
+    "machineWasStopped": "Maszyna była zatrzymana"
+  },
+  "Errors": {
+    "forbidden": "Nie masz uprawnień do tej operacji.",
+    "machine_not_found": "Nie znaleziono maszyny. Wybierz ją ponownie.",
+    "ticket_not_found": "Nie znaleziono zgłoszenia.",
+    "invalid_transition": "Tej zmiany nie można wykonać w obecnym statusie.",
+    "use_assign_ticket": "Wybierz technika, aby przypisać zgłoszenie.",
+    "self_assign_disabled": "Samodzielne przyjmowanie zgłoszeń jest wyłączone.",
+    "not_assignee": "To zgłoszenie jest przypisane do innego technika.",
+    "comment_required": "Dodaj komentarz.",
+    "resolution_required": "Opisz wykonane prace przed zakończeniem.",
+    "invalid_technician": "Wybrana osoba nie jest aktywnym technikiem.",
+    "ticket_locked": "Zamkniętego zgłoszenia nie można edytować.",
+    "unknown": "Coś poszło nie tak. Spróbuj ponownie.",
+    "invalid": "Uzupełnij wymagane pola."
+  },
+  "Board": {
+    "columns": {
+      "unassigned": "Do przypisania",
+      "assigned": "Przydzielone",
+      "inWork": "W realizacji",
+      "awaitingLeader": "Czeka na lidera",
+      "toClose": "Do zamknięcia"
+    },
+    "emptyColumn": "Pusto"
+  },
+  "Actions": {
+    "managerHeading": "Działania kierownika",
+    "technician": "Technik",
+    "noTechnicians": "Brak aktywnych techników.",
+    "assign": "Przypisz",
+    "reassign": "Zmień technika",
+    "priority": "Priorytet",
+    "close": "Zamknij zgłoszenie",
+    "cancel": "Anuluj zgłoszenie",
+    "back": "Wróć",
+    "commentLabel": {
+      "cancelled": "Dlaczego anulujesz zgłoszenie?",
+      "rejected": "Co nadal nie działa?",
+      "on_hold": "Na co czekasz? (np. części)"
+    }
+  },
+  "Tech": {
+    "heading": "Twoje działania",
+    "take": "Weź zgłoszenie",
+    "start": "Rozpocznij pracę",
+    "resume": "Wznów pracę",
+    "restart": "Wróć do naprawy",
+    "hold": "Wstrzymaj",
+    "rejectedBy": "Lider odrzucił naprawę:",
+    "holdReason": "Wstrzymane:",
+    "running": "Praca w toku od {time}",
+    "resolve": {
+      "heading": "Zakończ naprawę",
+      "rootCause": "Przyczyna awarii",
+      "rootCausePlaceholder": "np. uszkodzony enkoder osi 3",
+      "resolution": "Wykonane prace",
+      "resolutionPlaceholder": "Co zostało zrobione, wymienione, ustawione",
+      "resolutionError": "Opisz wykonane prace (min. 3 znaki)",
+      "photos": "Zdjęcia po naprawie",
+      "submit": "Zakończ i przekaż liderowi"
+    },
+    "parts": {
+      "heading": "Użyte części",
+      "empty": "Nie dodano części.",
+      "name": "Nazwa części",
+      "number": "Numer katalogowy",
+      "quantity": "Ilość",
+      "unit": "Jednostka",
+      "add": "Dodaj część",
+      "remove": "Usuń",
+      "units": {
+        "pcs": "szt.",
+        "m": "m",
+        "l": "l",
+        "kg": "kg",
+        "set": "kpl."
+      }
+    }
+  },
+  "Leader": {
+    "heading": "Czy maszyna działa?",
+    "hint": "Sprawdź maszynę i potwierdź naprawę albo odrzuć ją z opisem problemu.",
+    "confirm": "Potwierdzam, działa",
+    "reject": "Odrzuć naprawę"
+  },
+  "Admin": {
+    "heading": "Administracja",
+    "tabs": {
+      "settings": "Ustawienia",
+      "machines": "Maszyny",
+      "areas": "Obszary",
+      "users": "Użytkownicy"
+    },
+    "save": "Zapisz",
+    "add": "Dodaj",
+    "saved": "Zapisano",
+    "inactive": "Nieaktywna",
+    "chooseArea": "Wybierz obszar",
+    "fields": {
+      "code": "Kod",
+      "name": "Nazwa",
+      "area": "Obszar",
+      "criticality": "Krytyczność",
+      "active": "Aktywna",
+      "role": "Rola",
+      "activeAccount": "Konto aktywne"
+    },
+    "criticality": {
+      "A": "A – kluczowa",
+      "B": "B – ważna",
+      "C": "C – pomocnicza"
+    },
+    "selfAssign": {
+      "title": "Technicy biorą zgłoszenia z puli",
+      "hint": "Gdy włączone, technik może sam przypisać sobie nowe zgłoszenie bez udziału kierownika.",
+      "on": "Włączone",
+      "off": "Wyłączone",
+      "enable": "Włącz",
+      "disable": "Wyłącz"
+    },
+    "areas": {
+      "add": "Nowy obszar",
+      "machines": "{count, plural, =0 {Brak maszyn} one {# maszyna} few {# maszyny} other {# maszyn}}"
+    },
+    "machines": {
+      "add": "Dodaj maszynę",
+      "labels": "Etykiety QR"
+    },
+    "labels": {
+      "hint": "Wydrukuj i naklej na maszyny. Zeskanowanie kodu aparatem telefonu otwiera formularz zgłoszenia z wybraną maszyną.",
+      "all": "Wszystkie",
+      "print": "Drukuj",
+      "scan": "Awaria? Zeskanuj i zgłoś"
+    },
+    "users": {
+      "hint": "Zmieniaj rolę, obszar i dostęp istniejących osób. Zapraszanie nowych osób dojdzie razem z pełnym logowaniem.",
+      "you": "(Ty)"
+    },
+    "errors": {
+      "invalid": "Uzupełnij poprawnie zaznaczone pola.",
+      "duplicate": "Taki kod już istnieje.",
+      "forbidden": "Nie masz uprawnień do tej operacji.",
+      "cannot_change_self": "Nie możesz odebrać sobie roli kierownika ani dezaktywować własnego konta.",
+      "area_required": "Lider musi mieć przypisany obszar.",
+      "unknown": "Coś poszło nie tak. Spróbuj ponownie."
+    }
+  }
+}

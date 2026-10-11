@@ -1,0 +1,291 @@
+{
+  "Metadata": {
+    "title": "Maintenance",
+    "description": "Machine breakdown reporting and handling for the production plant"
+  },
+  "Common": {
+    "appName": "Maintenance",
+    "language": "Language",
+    "skipToContent": "Skip to content",
+    "signOut": "Sign out",
+    "admin": "Administration"
+  },
+  "Home": {
+    "greeting": "Hi, {name}",
+    "heading": {
+      "area_leader": "Tickets in {area}",
+      "technician": "My work and new tickets",
+      "manager": "Open tickets across the plant"
+    },
+    "empty": "No open tickets",
+    "loadError": "Could not load tickets. Try refreshing the page.",
+    "machineStopped": "Machine down",
+    "report": "Report breakdown",
+    "mine": "My tickets",
+    "pool": "New tickets",
+    "emptyMine": "You have no assigned tickets.",
+    "toConfirm": "Awaiting your sign-off",
+    "inArea": "Other tickets"
+  },
+  "Roles": {
+    "area_leader": {
+      "name": "Area leader",
+      "summary": "Reports breakdowns on their line and confirms the fix."
+    },
+    "technician": {
+      "name": "Maintenance technician",
+      "summary": "Takes tickets, fixes breakdowns and records the work done."
+    },
+    "manager": {
+      "name": "Maintenance manager",
+      "summary": "Assigns work, sets priorities and manages the team."
+    }
+  },
+  "Status": {
+    "new": "New",
+    "assigned": "Assigned",
+    "in_progress": "In progress",
+    "on_hold": "On hold",
+    "resolved": "Awaiting sign-off",
+    "rejected": "Rejected",
+    "confirmed": "Confirmed",
+    "closed": "Closed",
+    "cancelled": "Cancelled"
+  },
+  "Priority": {
+    "critical": "Critical",
+    "high": "High",
+    "normal": "Normal",
+    "low": "Low"
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "back": "Back to home"
+  },
+  "Login": {
+    "title": "Sign in",
+    "lead": "Choose the role you want to work as.",
+    "leaderArea": "Assembly",
+    "demoNotice": "Demo version: no password needed. Each role is a shared test account.",
+    "errors": {
+      "unavailable": "Sign-in is temporarily unavailable. Please try again shortly."
+    }
+  },
+  "Report": {
+    "heading": "Report a breakdown",
+    "back": "Back",
+    "optional": "(optional)",
+    "machine": {
+      "label": "Machine",
+      "scan": "Scan machine QR code",
+      "search": "Search by code or name",
+      "change": "Change",
+      "noResults": "No machines match your search",
+      "required": "Choose a machine",
+      "unknownQr": "This code is not a machine in your area. Pick one from the list."
+    },
+    "scanner": {
+      "title": "Scan QR code",
+      "close": "Close",
+      "hint": "Point the camera at the label on the machine.",
+      "noCamera": "No camera access. Allow camera use in your browser or pick the machine from the list."
+    },
+    "stopped": {
+      "label": "Machine is down",
+      "hint": "Production on this machine has stopped"
+    },
+    "title": {
+      "label": "What happened?",
+      "placeholder": "e.g. Robot stopped with a servo fault",
+      "error": "Describe the problem in a few words (at least 3 characters)"
+    },
+    "description": {
+      "label": "Details",
+      "placeholder": "Error codes, symptoms, what was already checked"
+    },
+    "priority": "Priority",
+    "photos": {
+      "label": "Photos",
+      "take": "Take photo",
+      "pick": "From gallery",
+      "remove": "Remove photo"
+    },
+    "submit": "Send report",
+    "submitting": "Sending…"
+  },
+  "Ticket": {
+    "metaTitle": "Ticket {id}",
+    "back": "All tickets",
+    "reported": "Report sent. The maintenance manager will see it.",
+    "photosFailed": "Saved, but the photos could not be added.",
+    "machineStopped": "Machine is down",
+    "machine": "Machine",
+    "area": "Area",
+    "reportedBy": "Reported by",
+    "assignee": "Technician",
+    "unassigned": "Unassigned",
+    "description": "Description",
+    "photos": "Photos",
+    "repair": "Repair",
+    "rootCause": "Root cause",
+    "resolution": "Work done",
+    "history": "History",
+    "events": {
+      "created": "Breakdown reported",
+      "assigned": "Technician assigned",
+      "priority_changed": "Priority: {from} → {to}",
+      "status_changed": "Status: {status}"
+    },
+    "system": "System",
+    "workTime": "Work time",
+    "parts": "Parts used",
+    "machineWasStopped": "The machine was down"
+  },
+  "Errors": {
+    "forbidden": "You are not allowed to do this.",
+    "machine_not_found": "Machine not found. Please choose it again.",
+    "ticket_not_found": "Ticket not found.",
+    "invalid_transition": "This change is not possible in the current status.",
+    "use_assign_ticket": "Choose a technician to assign the ticket.",
+    "self_assign_disabled": "Taking tickets yourself is turned off.",
+    "not_assignee": "This ticket is assigned to another technician.",
+    "comment_required": "Add a comment.",
+    "resolution_required": "Describe the work done before finishing.",
+    "invalid_technician": "The selected person is not an active technician.",
+    "ticket_locked": "A closed ticket cannot be edited.",
+    "unknown": "Something went wrong. Please try again.",
+    "invalid": "Fill in the required fields."
+  },
+  "Board": {
+    "columns": {
+      "unassigned": "To assign",
+      "assigned": "Assigned",
+      "inWork": "In progress",
+      "awaitingLeader": "Awaiting leader",
+      "toClose": "To close"
+    },
+    "emptyColumn": "Empty"
+  },
+  "Actions": {
+    "managerHeading": "Manager actions",
+    "technician": "Technician",
+    "noTechnicians": "No active technicians.",
+    "assign": "Assign",
+    "reassign": "Reassign",
+    "priority": "Priority",
+    "close": "Close ticket",
+    "cancel": "Cancel ticket",
+    "back": "Back",
+    "commentLabel": {
+      "cancelled": "Why are you cancelling this ticket?",
+      "rejected": "What is still not working?",
+      "on_hold": "What are you waiting for? (e.g. parts)"
+    }
+  },
+  "Tech": {
+    "heading": "Your actions",
+    "take": "Take this ticket",
+    "start": "Start work",
+    "resume": "Resume work",
+    "restart": "Resume repair",
+    "hold": "Put on hold",
+    "rejectedBy": "The leader rejected the repair:",
+    "holdReason": "On hold:",
+    "running": "Working since {time}",
+    "resolve": {
+      "heading": "Finish the repair",
+      "rootCause": "Root cause",
+      "rootCausePlaceholder": "e.g. faulty axis 3 encoder",
+      "resolution": "Work done",
+      "resolutionPlaceholder": "What was done, replaced, adjusted",
+      "resolutionError": "Describe the work done (at least 3 characters)",
+      "photos": "Photos after repair",
+      "submit": "Finish and hand over to leader"
+    },
+    "parts": {
+      "heading": "Parts used",
+      "empty": "No parts added.",
+      "name": "Part name",
+      "number": "Part number",
+      "quantity": "Quantity",
+      "unit": "Unit",
+      "add": "Add part",
+      "remove": "Remove",
+      "units": {
+        "pcs": "pcs",
+        "m": "m",
+        "l": "l",
+        "kg": "kg",
+        "set": "set"
+      }
+    }
+  },
+  "Leader": {
+    "heading": "Is the machine working?",
+    "hint": "Check the machine, then confirm the repair or reject it with a description of the problem.",
+    "confirm": "Confirm, it works",
+    "reject": "Reject repair"
+  },
+  "Admin": {
+    "heading": "Administration",
+    "tabs": {
+      "settings": "Settings",
+      "machines": "Machines",
+      "areas": "Areas",
+      "users": "Users"
+    },
+    "save": "Save",
+    "add": "Add",
+    "saved": "Saved",
+    "inactive": "Inactive",
+    "chooseArea": "Choose an area",
+    "fields": {
+      "code": "Code",
+      "name": "Name",
+      "area": "Area",
+      "criticality": "Criticality",
+      "active": "Active",
+      "role": "Role",
+      "activeAccount": "Account active"
+    },
+    "criticality": {
+      "A": "A – critical",
+      "B": "B – important",
+      "C": "C – auxiliary"
+    },
+    "selfAssign": {
+      "title": "Technicians take tickets from the pool",
+      "hint": "When on, a technician can take a new ticket without the manager assigning it.",
+      "on": "On",
+      "off": "Off",
+      "enable": "Turn on",
+      "disable": "Turn off"
+    },
+    "areas": {
+      "add": "New area",
+      "machines": "{count, plural, =0 {No machines} one {# machine} other {# machines}}"
+    },
+    "machines": {
+      "add": "Add machine",
+      "labels": "QR labels"
+    },
+    "labels": {
+      "hint": "Print and stick on the machines. Scanning a code with a phone camera opens the report form with the machine selected.",
+      "all": "All",
+      "print": "Print",
+      "scan": "Breakdown? Scan to report"
+    },
+    "users": {
+      "hint": "Change the role, area and access of existing people. Inviting new people comes with full sign-in.",
+      "you": "(you)"
+    },
+    "errors": {
+      "invalid": "Correct the highlighted fields.",
+      "duplicate": "This code already exists.",
+      "forbidden": "You are not allowed to do this.",
+      "cannot_change_self": "You cannot remove your own manager role or deactivate yourself.",
+      "area_required": "An area leader needs an area.",
+      "unknown": "Something went wrong. Please try again."
+    }
+  }
+}
