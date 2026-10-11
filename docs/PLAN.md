@@ -108,5 +108,5 @@ supabase/migrations/*.sql, supabase/seed.sql (demo: 2 obszary, ~10 maszyn, 3 uż
 
 ## Otwarte decyzje (do rozstrzygnięcia na etapie 2)
 
-- Nowy projekt Supabase przez MCP czy na razie tylko lokalnie (Supabase CLI)? Domyślnie: lokalnie i migracje w repo, projekt w chmurze przed pierwszym deployem.
+- ~~Projekt Supabase~~: założony w chmurze (`maintenance-app`, eu-central-1).
 - Hosting: domyślnie Vercel.
