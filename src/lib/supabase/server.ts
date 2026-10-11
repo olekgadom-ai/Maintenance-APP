@@ -1,11 +1,14 @@
 import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 import type { Database } from "./database.types";
 import { supabaseKey, supabaseUrl } from "./env";
 
 // One client per request: it carries the caller's session, so RLS applies.
 export async function createClient() {
+  // The client reads the clock while loading the session; keep that out of prerendering.
+  await connection();
   const cookieStore = await cookies();
 
   return createServerClient<Database>(supabaseUrl, supabaseKey, {

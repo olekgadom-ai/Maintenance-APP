@@ -14,6 +14,8 @@ cp .env.example .env.local
 npm run dev          # http://localhost:3000 → przekierowanie na /pl lub /en
 ```
 
+Za proxy HTTP (np. w chmurowym środowisku Claude Code) Node nie używa proxy sam z siebie: uruchamiaj z `NODE_USE_ENV_PROXY=1 npm run dev`.
+
 | Skrypt                            | Opis                                   |
 | --------------------------------- | -------------------------------------- |
 | `npm run lint`                    | ESLint                                 |

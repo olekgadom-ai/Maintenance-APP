@@ -5,6 +5,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { requireUser } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
+import { cn } from "@/lib/utils";
 
 const CLOSED_STATUSES = "(confirmed,closed,cancelled)";
 
@@ -50,10 +51,10 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         {canReport && (
           <Link
             href="/tickets/new"
-            className={buttonVariants({
-              size: "lg",
-              className: "hidden sm:inline-flex",
-            })}
+            className={cn(
+              buttonVariants({ size: "lg" }),
+              "hidden sm:inline-flex",
+            )}
           >
             <Plus aria-hidden />
             {t("report")}
@@ -115,7 +116,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         <div className="fixed inset-x-0 bottom-0 border-t bg-background/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur sm:hidden">
           <Link
             href="/tickets/new"
-            className={buttonVariants({ size: "lg", className: "w-full" })}
+            className={cn(buttonVariants({ size: "lg" }), "w-full")}
           >
             <Plus aria-hidden />
             {t("report")}
