@@ -22,7 +22,9 @@
     "report": "Report breakdown",
     "mine": "My tickets",
     "pool": "New tickets",
-    "emptyMine": "You have no assigned tickets."
+    "emptyMine": "You have no assigned tickets.",
+    "toConfirm": "Awaiting your sign-off",
+    "inArea": "Other tickets"
   },
   "Roles": {
     "area_leader": {
@@ -135,7 +137,8 @@
     },
     "system": "System",
     "workTime": "Work time",
-    "parts": "Parts used"
+    "parts": "Parts used",
+    "machineWasStopped": "The machine was down"
   },
   "Errors": {
     "forbidden": "You are not allowed to do this.",
@@ -215,5 +218,11 @@
         "set": "set"
       }
     }
+  },
+  "Leader": {
+    "heading": "Is the machine working?",
+    "hint": "Check the machine, then confirm the repair or reject it with a description of the problem.",
+    "confirm": "Confirm, it works",
+    "reject": "Reject repair"
   }
 }

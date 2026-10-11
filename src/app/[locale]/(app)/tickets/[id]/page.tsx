@@ -17,7 +17,7 @@ import { removePart } from "@/lib/tickets/actions";
 import { createClient } from "@/lib/supabase/server";
 import { getTechnicians } from "@/lib/tickets/queries";
 import type { PART_UNITS } from "@/lib/tickets/schemas";
-import { ASSIGNABLE, type Priority } from "@/lib/tickets/status";
+import { ASSIGNABLE, isMachineDown, type Priority } from "@/lib/tickets/status";
 
 type PartUnit = (typeof PART_UNITS)[number];
 
@@ -39,17 +39,19 @@ export default async function TicketPage({
   const user = await requireUser(locale);
   if (!UUID.test(id)) notFound();
 
-  const [t, ta, tt, tu, ts, tp, format, supabase, query] = await Promise.all([
-    getTranslations("Ticket"),
-    getTranslations("Actions"),
-    getTranslations("Tech"),
-    getTranslations("Tech.parts.units"),
-    getTranslations("Status"),
-    getTranslations("Priority"),
-    getFormatter(),
-    createClient(),
-    searchParams,
-  ]);
+  const [t, ta, tt, tl, tu, ts, tp, format, supabase, query] =
+    await Promise.all([
+      getTranslations("Ticket"),
+      getTranslations("Actions"),
+      getTranslations("Tech"),
+      getTranslations("Leader"),
+      getTranslations("Tech.parts.units"),
+      getTranslations("Status"),
+      getTranslations("Priority"),
+      getFormatter(),
+      createClient(),
+      searchParams,
+    ]);
 
   // RLS returns nothing for tickets the user may not see, so they 404 like missing ones.
   const { data: ticket } = await supabase
@@ -158,11 +160,18 @@ export default async function TicketPage({
         {ticket.title}
       </h1>
 
-      {ticket.machine_stopped && (
+      {isMachineDown(ticket) ? (
         <p className="mt-4 flex items-center gap-2 rounded-lg bg-priority-critical px-3 py-2.5 font-semibold text-white">
           <TriangleAlert aria-hidden className="size-5" />
           {t("machineStopped")}
         </p>
+      ) : (
+        ticket.machine_stopped && (
+          <p className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+            <TriangleAlert aria-hidden className="size-4" />
+            {t("machineWasStopped")}
+          </p>
+        )
       )}
 
       <dl className="mt-6 grid grid-cols-1 gap-x-6 gap-y-4 rounded-xl border bg-surface p-4 sm:grid-cols-2">
@@ -193,7 +202,31 @@ export default async function TicketPage({
         />
       )}
 
-      {isManager && (
+      {/* RLS already limits leaders to tickets from their own area. */}
+      {user.role === "area_leader" && ticket.status === "resolved" && (
+        <section
+          aria-labelledby="leader-actions"
+          className="mt-6 grid gap-3 rounded-xl border-2 border-status-resolved/40 bg-surface p-4"
+        >
+          <h2 id="leader-actions" className="font-semibold">
+            {tl("heading")}
+          </h2>
+          <p className="text-sm text-muted-foreground">{tl("hint")}</p>
+          <TransitionButton
+            ticketId={ticket.id}
+            to="confirmed"
+            label={tl("confirm")}
+          />
+          <TransitionButton
+            ticketId={ticket.id}
+            to="rejected"
+            label={tl("reject")}
+            variant="secondary"
+          />
+        </section>
+      )}
+
+      {isManager && (open || ticket.status === "confirmed") && (
         <section
           aria-labelledby="manager-actions"
           className="mt-6 grid gap-5 rounded-xl border bg-surface p-4"

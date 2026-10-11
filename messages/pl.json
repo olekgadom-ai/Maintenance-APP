@@ -22,7 +22,9 @@
     "report": "Zgłoś awarię",
     "mine": "Moje zlecenia",
     "pool": "Nowe zgłoszenia",
-    "emptyMine": "Nie masz przypisanych zleceń."
+    "emptyMine": "Nie masz przypisanych zleceń.",
+    "toConfirm": "Do potwierdzenia",
+    "inArea": "Pozostałe zgłoszenia"
   },
   "Roles": {
     "area_leader": {
@@ -135,7 +137,8 @@
     },
     "system": "System",
     "workTime": "Czas pracy",
-    "parts": "Użyte części"
+    "parts": "Użyte części",
+    "machineWasStopped": "Maszyna była zatrzymana"
   },
   "Errors": {
     "forbidden": "Nie masz uprawnień do tej operacji.",
@@ -215,5 +218,11 @@
         "set": "kpl."
       }
     }
+  },
+  "Leader": {
+    "heading": "Czy maszyna działa?",
+    "hint": "Sprawdź maszynę i potwierdź naprawę albo odrzuć ją z opisem problemu.",
+    "confirm": "Potwierdzam, działa",
+    "reject": "Odrzuć naprawę"
   }
 }

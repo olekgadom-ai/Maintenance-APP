@@ -87,3 +87,20 @@ export const ASSIGNABLE: readonly TicketStatus[] = [
   "on_hold",
   "rejected",
 ];
+
+// machine_stopped records the state at report time. Once the technician has
+// finished the repair the machine is assumed to run again.
+const REPAIR_PENDING: readonly TicketStatus[] = [
+  "new",
+  "assigned",
+  "in_progress",
+  "on_hold",
+  "rejected",
+];
+
+export function isMachineDown(ticket: {
+  status: TicketStatus;
+  machine_stopped: boolean;
+}): boolean {
+  return ticket.machine_stopped && REPAIR_PENDING.includes(ticket.status);
+}

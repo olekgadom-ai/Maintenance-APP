@@ -3,7 +3,11 @@ import { useFormatter, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { PriorityBadge, StatusBadge } from "@/components/status-badge";
 import { Link } from "@/i18n/navigation";
-import type { Priority, TicketStatus } from "@/lib/tickets/status";
+import {
+  isMachineDown,
+  type Priority,
+  type TicketStatus,
+} from "@/lib/tickets/status";
 
 export type TicketSummary = {
   id: string;
@@ -45,7 +49,7 @@ export function TicketCard({
               {ticket.number}
             </span>
             <PriorityBadge priority={ticket.priority} />
-            {ticket.machine_stopped && (
+            {isMachineDown(ticket) && (
               <span className="inline-flex h-7 items-center rounded-md bg-priority-critical/12 px-2 text-xs font-semibold text-priority-critical">
                 {t("machineStopped")}
               </span>

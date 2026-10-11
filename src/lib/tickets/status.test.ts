@@ -5,6 +5,7 @@ import {
   availableTransitions,
   canTransition,
   isOpen,
+  isMachineDown,
   isTerminal,
 } from "./status";
 
@@ -49,5 +50,22 @@ describe("ticket lifecycle", () => {
     expect(isTerminal("resolved")).toBe(false);
     expect(isOpen("resolved")).toBe(true);
     expect(isOpen("confirmed")).toBe(false);
+  });
+});
+
+describe("machine down banner", () => {
+  it("shows until the repair is finished", () => {
+    expect(isMachineDown({ status: "on_hold", machine_stopped: true })).toBe(
+      true,
+    );
+    expect(isMachineDown({ status: "rejected", machine_stopped: true })).toBe(
+      true,
+    );
+    expect(isMachineDown({ status: "resolved", machine_stopped: true })).toBe(
+      false,
+    );
+    expect(isMachineDown({ status: "new", machine_stopped: false })).toBe(
+      false,
+    );
   });
 });

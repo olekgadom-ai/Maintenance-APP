@@ -115,6 +115,47 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
             </section>
           ))}
         </div>
+      ) : user.role === "area_leader" && tickets.length > 0 ? (
+        <div className="mt-6 grid max-w-3xl gap-8">
+          {[
+            {
+              key: "toConfirm" as const,
+              items: tickets.filter((x) => x.status === "resolved"),
+            },
+            {
+              key: "inArea" as const,
+              items: tickets.filter((x) => x.status !== "resolved"),
+            },
+          ]
+            .filter(({ items }) => items.length > 0)
+            .map(({ key, items }) => (
+              <section key={key} aria-labelledby={`leader-${key}`}>
+                <h2
+                  id={`leader-${key}`}
+                  className="mb-3 flex items-center gap-2 text-sm font-semibold"
+                >
+                  {t(key)}
+                  <span
+                    className={cn(
+                      "inline-grid h-6 min-w-6 place-items-center rounded-full px-1.5 text-xs",
+                      key === "toConfirm"
+                        ? "bg-status-resolved text-white"
+                        : "bg-surface-muted text-muted-foreground",
+                    )}
+                  >
+                    {items.length}
+                  </span>
+                </h2>
+                <ul className="grid gap-3">
+                  {items.map((ticket) => (
+                    <li key={ticket.id}>
+                      <TicketCard ticket={ticket} now={now} />
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+        </div>
       ) : tickets.length === 0 ? (
         <div className="mt-8 flex max-w-3xl flex-col items-center rounded-xl border border-dashed px-6 py-12 text-center">
           <Inbox aria-hidden className="size-8 text-muted-foreground" />
